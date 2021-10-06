@@ -12,9 +12,13 @@ namespace ASE_Assignment
 {
     public partial class Form1 : Form
     {
+        CommandParser parser;
         public Form1()
         {
+            parser = new CommandParser();
             InitializeComponent();
+            pictureBox1.BackColor = Color.White;
+            pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(parser.Graphics_Paint);
         }
         private void execute_script(object sender, EventArgs e)
         {
