@@ -17,17 +17,17 @@ namespace ASE_Assignment
         {
             parser = new CommandParser();
             InitializeComponent();
-            pictureBox1.BackColor = Color.White;
-            pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(parser.Graphics_Paint);
+            drawingArea.BackColor = Color.White;
+            drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(parser.Graphics_Paint);
         }
         private void execute_script(object sender, EventArgs e)
         {
-
+            parser.executeScript(scriptArea.Text);
         }
 
         private void execute(object sender, EventArgs e)
         {
-
+            parser.executeLine(commandArea.Text);
         }
 
     }
