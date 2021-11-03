@@ -13,12 +13,14 @@ namespace ASE_Assignment
     public partial class Form1 : Form
     {
         CommandParser parser;
+        Drawing drawer;
         public Form1()
         {
-            parser = new CommandParser();
+            drawer = new Drawing();
+            parser = new CommandParser(drawer);
             InitializeComponent();
             drawingArea.BackColor = Color.White;
-            drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(parser.Graphics_Paint);
+            drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
         }
         private void execute_script(object sender, EventArgs e)
         {
