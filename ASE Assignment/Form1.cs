@@ -17,8 +17,8 @@ namespace ASE_Assignment
         public Form1()
         {
             drawer = new Drawing();
-            parser = new CommandParser(drawer);
             InitializeComponent();
+            parser = new CommandParser(drawer, drawingArea);
             drawingArea.BackColor = Color.White;
             drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
         }
@@ -29,7 +29,7 @@ namespace ASE_Assignment
 
         private void execute(object sender, EventArgs e)
         {
-            parser.executeLine(commandArea.Text);
+            parser.executeLineHandler(commandArea.Text);
         }
 
     }

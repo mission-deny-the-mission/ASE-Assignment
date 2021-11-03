@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace ASE_Assignment
 {
@@ -8,15 +9,17 @@ namespace ASE_Assignment
         public (byte, byte, byte, byte) getPenColour();
         public void setPenWidth(float width);
         public float getPenWidth();
+        public void drawCircle(int x, int y, int radius);
     }
     class Drawing : Drawer
     {
         (byte, byte, byte, byte) penColour;
         private Pen pen;
+        protected List<Shape> shapes;
         public Drawing()
         {
             pen = new Pen(Color.Black, 2);
-
+            shapes = new List<Shape>();
         }
         ~Drawing()
         {
@@ -25,7 +28,10 @@ namespace ASE_Assignment
         public void Graphics_Paint(object sender, System.Windows.Forms.PaintEventArgs pe)
         {
             System.Drawing.Graphics g = pe.Graphics;
-            g.DrawLine(pen, 0, 0, 100, 100);
+            foreach (Shape shape in shapes)
+            {
+                shape.Paint(g);
+            }
         }
         public void setPenColour((byte, byte, byte, byte) colour)
         {
@@ -44,5 +50,11 @@ namespace ASE_Assignment
         {
             return pen.Width;
         }
+        public void drawCircle(int x, int y, int radius)
+        {
+            Circle circle = new Circle(pen.Color, x, y, pen.Width, radius);
+            shapes.Add(circle);
+        }
     }
+
 }
