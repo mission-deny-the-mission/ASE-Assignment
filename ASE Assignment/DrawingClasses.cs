@@ -10,6 +10,7 @@ namespace ASE_Assignment
         public void setPenWidth(float width);
         public float getPenWidth();
         public void drawCircle(int x, int y, int radius);
+        public void clear();
     }
     class Drawing : Drawer
     {
@@ -54,6 +55,10 @@ namespace ASE_Assignment
         {
             Circle circle = new Circle(pen.Color, x, y, pen.Width, radius);
             shapes.Add(circle);
+        }
+        public void clear()
+        {
+            shapes.Clear();
         }
     }
 

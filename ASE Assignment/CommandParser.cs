@@ -50,6 +50,12 @@ namespace ASE_Assignment
                         drawingClass.drawCircle(x, y, radius);
                     }
                     break;
+                case "clear":
+                    if (words.Length == 1)
+                    {
+                        drawingClass.clear();
+                    }
+                    break;
                 default:
                     throw new Exception("Invalid command");
             }
