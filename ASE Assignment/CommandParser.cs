@@ -110,6 +110,42 @@ namespace ASE_Assignment
                         throw new Exception("Invalid number of operands");
                     }
                     break;
+                case "new":
+                    if (words.Length == 6)
+                    {
+                        if (words[1] == "colour" || words[1] == "color")
+                        {
+                            if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
+                                Byte.TryParse(words[5], out byte b))
+                            {
+                                colours.Add(words[2], (r, g, b, 255));
+                            }
+                            else
+                            {
+                                throw new Exception("Colour value is not a number");
+                            }
+                        }
+                    }
+                    else if (words.Length == 7)
+                    {
+                        if (words[1] == "colour" || words[1] == "color")
+                        {
+                            if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
+                                Byte.TryParse(words[5], out byte b) && Byte.TryParse(words[6], out byte a))
+                            {
+                                colours.Add(words[2], (r, g, b, a));
+                            }
+                            else
+                            {
+                                throw new Exception("Colour value is not a number");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Incorrect number of operands");
+                    }
+                    break;
                 case "clear":
                     if (words.Length == 1)
                     {
