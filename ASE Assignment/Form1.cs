@@ -29,7 +29,7 @@ namespace ASE_Assignment
 
         private void execute(object sender, EventArgs e)
         {
-            parser.executeLineHandler(commandArea.Text);
+            parser.executeLineHandler(commandArea.Text, scriptArea.Text);
         }
 
     }

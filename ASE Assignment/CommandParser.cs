@@ -121,9 +121,16 @@ namespace ASE_Assignment
             }
         }
 
-        public void executeLineHandler(string line)
+        public void executeLineHandler(string line, string script)
         {
-            executeLine(line);
+            if (line == "run")
+            {
+                executeScript(script);
+            }
+            else
+            {
+                executeLine(line);
+            }
             pictureBox.Refresh();
         }
 
