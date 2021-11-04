@@ -6,11 +6,17 @@ namespace ASE_Assignment
     {
         protected int x, y;
         protected Pen pen;
-        protected Shape(Color colour, int x, int y, float penWidth)
+        protected SolidBrush brush;
+        protected bool fillState;
+        protected Shape(Color colour, int x, int y, float penWidth, bool fillState)
         {
             this.x = x;
             this.y = y;
-            pen = new Pen(colour, penWidth);
+            this.fillState = fillState;
+            if (fillState)
+                brush = new SolidBrush(colour);
+            else
+                pen = new Pen(colour, penWidth);
         }
         ~Shape()
         {

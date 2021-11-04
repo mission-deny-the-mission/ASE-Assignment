@@ -44,10 +44,70 @@ namespace ASE_Assignment
                     drawingClass.setPenColour(colour);
                     break;
                 case "circle":
-                    if (Int32.TryParse(words[1], out int x) && Int32.TryParse(words[2], out int y)
-                        && Int32.TryParse(words[3], out int radius))
+                    if (words.Length == 4)
                     {
-                        drawingClass.drawCircle(x, y, radius);
+                        if (Int32.TryParse(words[1], out int x) && Int32.TryParse(words[2], out int y)
+                            && Int32.TryParse(words[3], out int radius))
+                        {
+                            drawingClass.drawCircle(x, y, radius);
+                        }
+                        else
+                        {
+                            throw new Exception("Invalid command");
+                        }
+                    }
+                    else if (words.Length == 2)
+                    {
+                        if (Int32.TryParse(words[1], out int radius))
+                        {
+                            drawingClass.drawCircle(radius);
+                        }
+                        else
+                        {
+                            throw new Exception("Invalid command");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid command");
+                    }
+                    break;
+                case "Position":
+                    if (words.Length == 4 && words[1] == "pen")
+                    {
+                        if (Int32.TryParse(words[2], out int x) && Int32.TryParse(words[3], out int y))
+                        {
+                            drawingClass.setPosition(x, y);
+                        }
+                        else
+                        {
+                            throw new Exception("Position is not a number");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid command");
+                    }
+                    break;
+                case "fill":
+                    if (words.Length == 2)
+                    {
+                        if (words[1] == "on")
+                        {
+                            drawingClass.setFillState(true);
+                        }
+                        else if (words[1] == "off")
+                        {
+                            drawingClass.setFillState(false);
+                        }
+                        else
+                        {
+                            throw new Exception("Invalid operand");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid number of operands");
                     }
                     break;
                 case "clear":
