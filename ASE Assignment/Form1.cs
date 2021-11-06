@@ -16,9 +16,9 @@ namespace ASE_Assignment
         Drawing drawer;
         public Form1()
         {
-            drawer = new Drawing();
             InitializeComponent();
-            parser = new CommandParser(drawer, drawingArea);
+            drawer = new Drawing(drawingArea);
+            parser = new CommandParser(drawer);
             drawingArea.BackColor = Color.White;
             drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
         }

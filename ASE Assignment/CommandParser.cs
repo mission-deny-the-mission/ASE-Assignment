@@ -9,12 +9,11 @@ namespace ASE_Assignment
     class CommandParser
     {
         Drawer drawingClass;
-        protected System.Windows.Forms.PictureBox pictureBox;
         Dictionary<string, (byte, byte, byte, byte)> colours = new Dictionary<string, (byte, byte, byte, byte)>();
-        public CommandParser(Drawer drawingClass, System.Windows.Forms.PictureBox pictureBox)
+
+        public CommandParser(Drawer drawingClass)
         {
             this.drawingClass = drawingClass;
-            this.pictureBox = pictureBox;
             colours.Add("red", (255, 0, 0, 255));
             colours.Add("green", (0, 255, 0, 255));
             colours.Add("blue", (0, 0, 255, 255));
@@ -188,7 +187,7 @@ namespace ASE_Assignment
             {
                 executeLine(line);
             }
-            pictureBox.Refresh();
+            drawingClass.update();
         }
 
         public void executeScript(string script)
@@ -197,7 +196,7 @@ namespace ASE_Assignment
             {
                 executeLine(line);
             }
-            pictureBox.Refresh();
+            drawingClass.update();
         }
 
     }

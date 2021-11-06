@@ -17,6 +17,7 @@ namespace ASE_Assignment
         public void setPosition(int x, int y);
         public bool getFillState();
         public void setFillState(bool fillState);
+        public void update();
     }
     class Drawing : Drawer
     {
@@ -25,9 +26,11 @@ namespace ASE_Assignment
         protected List<Shape> shapes;
         protected int x, y;
         protected bool fillState;
+        protected System.Windows.Forms.PictureBox drawingArea;
 
-        public Drawing()
+        public Drawing(System.Windows.Forms.PictureBox drawingArea)
         {
+            this.drawingArea = drawingArea;
             pen = new Pen(Color.Black, 2);
             shapes = new List<Shape>();
             x = 0;
@@ -114,6 +117,11 @@ namespace ASE_Assignment
         public void setFillState(bool fillState)
         {
             this.fillState = fillState;
+        }
+
+        public void update()
+        {
+            drawingArea.Refresh();
         }
     }
 
