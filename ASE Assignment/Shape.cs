@@ -13,10 +13,8 @@ namespace ASE_Assignment
             this.x = x;
             this.y = y;
             this.fillState = fillState;
-            if (fillState)
-                brush = new SolidBrush(colour);
-            else
-                pen = new Pen(colour, penWidth);
+            brush = new SolidBrush(colour);
+            pen = new Pen(colour, penWidth);
         }
         ~Shape()
         {

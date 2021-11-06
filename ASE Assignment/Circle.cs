@@ -10,7 +10,8 @@ namespace ASE_Assignment
     class Circle : Shape
     {
         protected int radius;
-        public Circle(Color colour, int x, int y, float penWidth, bool fillState, int radius) : base (colour, x, y, penWidth, fillState)
+        public Circle(Color colour, int x, int y, float penWidth, bool fillState, int radius)
+            : base (colour, x, y, penWidth, fillState)
         {
             this.radius = radius;
         }

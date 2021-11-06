@@ -44,10 +44,15 @@ namespace ASE_Assignment
                     drawingClass.setPenColour(colour);
                     break;
                 case "circle":
-                    if (words.Length == 4)
+                    if (words.Length == 3)
                     {
-                        if (Int32.TryParse(words[1], out int x) && Int32.TryParse(words[2], out int y)
-                            && Int32.TryParse(words[3], out int radius))
+                        string[] bits = words[1].Split(',');
+                        if (bits.Length != 2)
+                        {
+                            throw new Exception("Invalid operands");
+                        }
+                        if (Int32.TryParse(bits[0], out int x) && Int32.TryParse(bits[1], out int y)
+                            && Int32.TryParse(words[2], out int radius))
                         {
                             drawingClass.drawCircle(x, y, radius);
                         }
@@ -144,6 +149,16 @@ namespace ASE_Assignment
                     else
                     {
                         throw new Exception("Incorrect number of operands");
+                    }
+                    break;
+                case "DrawTo":
+                    if (words.Length == 2)
+                    {
+                        string[] parts = words[1].Split(',');
+                        if (Int32.TryParse(parts[0], out int x) && Int32.TryParse(parts[1], out int y))
+                        {
+                            drawingClass.drawLine(x, y);
+                        }
                     }
                     break;
                 case "clear":

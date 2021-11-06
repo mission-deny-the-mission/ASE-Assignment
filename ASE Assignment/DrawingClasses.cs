@@ -11,6 +11,7 @@ namespace ASE_Assignment
         public float getPenWidth();
         public void drawCircle(int x, int y, int radius);
         void drawCircle(int radius);
+        void drawLine(int endX, int endY);
         public void clear();
         public (int, int) getPosition();
         public void setPosition(int x, int y);
@@ -79,6 +80,12 @@ namespace ASE_Assignment
         {
             Circle circle = new Circle(pen.Color, x, y, pen.Width, fillState, radius);
             shapes.Add(circle);
+        }
+
+        public void drawLine(int endX, int endY)
+        {
+            Line line = new Line(pen.Color, x, y, pen.Width, fillState, endX, endY);
+            shapes.Add(line);
         }
 
         public void clear()
