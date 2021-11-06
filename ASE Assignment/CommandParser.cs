@@ -37,7 +37,7 @@ namespace ASE_Assignment
         {
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             string[] words = line.Split(' ');
-            switch (words[0])
+            switch (words[0].ToLower())
             {
                 case "pen":
                     (byte, byte, byte, byte) colour = decodeColour(words[1]);
@@ -49,7 +49,7 @@ namespace ASE_Assignment
                         string[] bits = words[1].Split(',');
                         if (bits.Length != 2)
                         {
-                            throw new Exception("Invalid operands");
+                            throw new Exception("Invalid coordinates");
                         }
                         if (Int32.TryParse(bits[0], out int x) && Int32.TryParse(bits[1], out int y)
                             && Int32.TryParse(words[2], out int radius))
@@ -77,10 +77,15 @@ namespace ASE_Assignment
                         throw new Exception("Invalid command");
                     }
                     break;
-                case "Position":
-                    if (words.Length == 4 && words[1] == "pen")
+                case "position":
+                    if (words.Length == 3 && words[1] == "pen")
                     {
-                        if (Int32.TryParse(words[2], out int x) && Int32.TryParse(words[3], out int y))
+                        string[] coordsText = words[2].Split(',');
+                        if (coordsText.Length != 2)
+                        {
+                            throw new Exception("Invalid coordinates");
+                        }
+                        if (Int32.TryParse(coordsText[0], out int x) && Int32.TryParse(coordsText[1], out int y))
                         {
                             drawingClass.setPosition(x, y);
                         }
@@ -151,13 +156,13 @@ namespace ASE_Assignment
                         throw new Exception("Incorrect number of operands");
                     }
                     break;
-                case "DrawTo":
+                case "drawto":
                     if (words.Length == 2)
                     {
                         string[] parts = words[1].Split(',');
                         if (Int32.TryParse(parts[0], out int x) && Int32.TryParse(parts[1], out int y))
                         {
-                            drawingClass.drawLine(x, y);
+                            drawingClass.drawTo(x, y);
                         }
                     }
                     break;
@@ -166,6 +171,7 @@ namespace ASE_Assignment
                     {
                         drawingClass.clear();
                     }
+                    colours.Clear();
                     break;
                 default:
                     throw new Exception("Invalid command");
