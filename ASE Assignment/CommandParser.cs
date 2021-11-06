@@ -169,6 +169,11 @@ namespace ASE_Assignment
                     if (words.Length == 1)
                     {
                         drawingClass.clear();
+                        colours.Add("red", (255, 0, 0, 255));
+                        colours.Add("green", (0, 255, 0, 255));
+                        colours.Add("blue", (0, 0, 255, 255));
+                        colours.Add("black", (0, 0, 0, 255));
+                        colours.Add("white", (255, 255, 255, 255));
                     }
                     colours.Clear();
                     break;
