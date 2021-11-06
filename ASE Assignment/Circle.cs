@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ASE_Assignment
 {
-    class Circle : Shape
+    public class Circle : Shape
     {
         protected int radius;
         public Circle(Color colour, int x, int y, float penWidth, bool fillState, int radius)

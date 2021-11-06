@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ASE_Assignment
 {
-    interface Drawer
+    public interface Drawer
     {
         public void setPenColour((byte, byte, byte, byte) colour);
         public (byte, byte, byte, byte) getPenColour();
@@ -19,7 +19,7 @@ namespace ASE_Assignment
         public void setFillState(bool fillState);
         public void update();
     }
-    class Drawing : Drawer
+    public class DrawingClass : Drawer
     {
         (byte, byte, byte, byte) penColour;
         private Pen pen;
@@ -28,7 +28,7 @@ namespace ASE_Assignment
         protected bool fillState;
         protected System.Windows.Forms.PictureBox drawingArea;
 
-        public Drawing(System.Windows.Forms.PictureBox drawingArea)
+        public DrawingClass(System.Windows.Forms.PictureBox drawingArea)
         {
             this.drawingArea = drawingArea;
             pen = new Pen(Color.Black, 2);
@@ -38,7 +38,7 @@ namespace ASE_Assignment
             fillState = false;
         }
 
-        ~Drawing()
+        ~DrawingClass()
         {
             pen.Dispose();
         }

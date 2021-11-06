@@ -2,7 +2,7 @@
 
 namespace ASE_Assignment
 {
-    abstract class Shape
+    public abstract class Shape
     {
         protected int x, y;
         protected Pen pen;

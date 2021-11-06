@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using ASE_Assignment_Unit_Tests;
+using ASE_Assignment;
 
 namespace ASE_Assignment_Unit_Tests
 {
@@ -11,6 +11,8 @@ namespace ASE_Assignment_Unit_Tests
         public void TestMethod1()
         {
             DebugDrawingClass drawingClass1 = new DebugDrawingClass();
+            DebugDrawingClass drawingClass2 = new DebugDrawingClass();
+
         }
     }
 }

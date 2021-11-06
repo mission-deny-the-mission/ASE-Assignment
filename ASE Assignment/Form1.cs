@@ -13,11 +13,11 @@ namespace ASE_Assignment
     public partial class Form1 : Form
     {
         CommandParser parser;
-        Drawing drawer;
+        DrawingClass drawer;
         public Form1()
         {
             InitializeComponent();
-            drawer = new Drawing(drawingArea);
+            drawer = new DrawingClass(drawingArea);
             parser = new CommandParser(drawer);
             drawingArea.BackColor = Color.White;
             drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
