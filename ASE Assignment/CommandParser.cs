@@ -35,6 +35,10 @@ namespace ASE_Assignment
         public void executeLine(string line)
         {
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+            if (line == "")
+            {
+                return;
+            }
             string[] words = line.Split(' ');
             switch (words[0].ToLower())
             {
