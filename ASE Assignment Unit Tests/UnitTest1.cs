@@ -90,5 +90,18 @@ namespace ASE_Assignment_Unit_Tests
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 3);
         }
+
+        [TestMethod]
+        public void TriangleTest1()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            parser.executeLine("Triangle 100,100 100,200 200,100");
+            class2.drawTriangle((100, 100), (100, 200), (200, 100));
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+        }
     }
 }
