@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ASE_Assignment
 {
-    class CommandParser
+    public class CommandParser
     {
         Drawer drawingClass;
         Dictionary<string, (byte, byte, byte, byte)> colours = new Dictionary<string, (byte, byte, byte, byte)>();

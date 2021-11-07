@@ -30,5 +30,9 @@ namespace ASE_Assignment
             this.x = x;
             this.y = y;
         }
+        public Color GetColor()
+        {
+            return pen.Color;
+        }
     }
 }

@@ -1,15 +1,56 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ASE_Assignment;
+using System.Collections.Generic;
 
 namespace ASE_Assignment_Unit_Tests
 {
     [TestClass]
     public class UnitTest1
     {
-        [TestMethod]
-        public void TestMethod1()
+        public void CompareTwoShapes(Shape shape1, Shape shape2)
         {
-            DebugDrawingClass class1 = new DebugDrawingClass();
-            DebugDrawingClass class2 = new DebugDrawingClass();
+            Assert.AreEqual(shape1.GetPosition(), shape2.GetPosition());
+            Assert.AreEqual(shape1.GetColor(), shape2.GetColor());
+            Assert.AreEqual(shape1.GetType(), shape1.GetType());
+
+            if (shape1.GetType() == typeof(Line))
+            {
+                Line line1 = (Line)shape1;
+                Line line2 = (Line)shape2;
+                Assert.AreEqual(line1.GetEndPoint(), line2.GetEndPoint());
+            }
+        }
+
+        public void CompareListOfShapes(List<Shape> shapes1, List<Shape> shapes2)
+        {
+            Assert.AreEqual(shapes1.Count, shapes2.Count);
+            for (int i = 0; i < shapes1.Count; i++)
+            {
+                CompareTwoShapes(shapes1[i], shapes2[i]);
+            }
+        }
+
+        public void CompareListOfShapes(List<Shape> shapes1, List<Shape> shapes2, int length)
+        {
+            Assert.AreEqual(shapes1.Count, length);
+            CompareListOfShapes(shapes1, shapes2);
+        }
+
+        [TestMethod]
+        public void ParserClassTest1()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new System.Windows.Forms.PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new System.Windows.Forms.PictureBox());
+
+            CommandParser commandParser = new CommandParser(class1);
+
+            commandParser.executeLine("DrawTo 100,100");
+            class2.drawTo(100, 100);
+
+            List<Shape> shapes1 = class1.GetShapes();
+            List<Shape> shapes2 = class2.GetShapes();
+
+            CompareListOfShapes(shapes1, shapes2, 1);
         }
     }
 }

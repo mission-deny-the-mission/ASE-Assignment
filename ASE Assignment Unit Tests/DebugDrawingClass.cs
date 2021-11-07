@@ -4,26 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ASE_Assignment;
+using System.Drawing;
 
 namespace ASE_Assignment_Unit_Tests
 {
     class DebugDrawingClass : DrawingClass
     {
-        public override DrawingClass()
-        {
-            pen = new Pen(Color.Black, 2);
-            shapes = new List<Shape>();
-            x = 0;
-            y = 0;
-            fillState = false;
-        }
+        public DebugDrawingClass(System.Windows.Forms.PictureBox pb) : base(pb)
+        {}
 
-        public DebugDrawingClass()
-        {
-            base();
-        }
-
-        public Shapes[] GetShapes()
+        public List<Shape> GetShapes()
         {
             return shapes;
         }
