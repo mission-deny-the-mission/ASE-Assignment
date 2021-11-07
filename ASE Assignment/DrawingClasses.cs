@@ -11,6 +11,7 @@ namespace ASE_Assignment
         public float getPenWidth();
         public void drawCircle(int x, int y, int radius);
         void drawCircle(int radius);
+        void drawTriangle((int, int) point1, (int, int) point2, (int, int) point3);
         void drawTo(int endX, int endY);
         public void clear();
         public (int, int) getPosition();
@@ -83,6 +84,12 @@ namespace ASE_Assignment
         {
             Circle circle = new Circle(pen.Color, x, y, pen.Width, fillState, radius);
             shapes.Add(circle);
+        }
+
+        public void drawTriangle((int, int) point1, (int, int) point2, (int, int) point3)
+        {
+            Triangle triangle = new Triangle(pen.Color, point1, point2, point3, pen.Width, fillState);
+            shapes.Add(triangle);
         }
 
         public void drawTo(int endX, int endY)

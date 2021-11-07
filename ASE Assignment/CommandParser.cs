@@ -32,6 +32,24 @@ namespace ASE_Assignment
                 throw new Exception();
             }
         }
+
+        public (int, int) parsePoint(string point)
+        {
+            string[] points = point.Split(',');
+            if (points.Length != 2)
+            {
+                throw new Exception("Invalid points entered");
+            }
+            if (Int32.TryParse(points[0], out int x) && Int32.TryParse(points[1], out int y))
+            {
+                return (x, y);
+            }
+            else
+            {
+                throw new Exception("Invalid point entered");
+            }
+        }
+
         public void executeLine(string line)
         {
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
@@ -78,6 +96,19 @@ namespace ASE_Assignment
                     else
                     {
                         throw new Exception("Invalid command");
+                    }
+                    break;
+                case "triangle":
+                    if (words.Length == 4)
+                    {
+                        (int, int) point1 = parsePoint(words[1]);
+                        (int, int) point2 = parsePoint(words[2]);
+                        (int, int) point3 = parsePoint(words[3]);
+                        drawingClass.drawTriangle(point1, point2, point3);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid number of operands for operation triangle");
                     }
                     break;
                 case "position":

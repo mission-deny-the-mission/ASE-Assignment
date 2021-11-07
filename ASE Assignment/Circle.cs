@@ -10,11 +10,27 @@ namespace ASE_Assignment
     public class Circle : Shape
     {
         protected int radius;
+        protected int x, y;
+
         public Circle(Color colour, int x, int y, float penWidth, bool fillState, int radius)
-            : base (colour, x, y, penWidth, fillState)
+            : base (colour, penWidth, fillState)
         {
             this.radius = radius;
+            this.x = x;
+            this.y = y;
         }
+
+        public (int, int) GetPosition()
+        {
+            return (x, y);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
         public override void Paint(Graphics graphics)
         {
             Rectangle rect = new Rectangle(x - radius, y - radius, radius * 2, radius * 2);

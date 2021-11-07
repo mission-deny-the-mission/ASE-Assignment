@@ -10,7 +10,6 @@ namespace ASE_Assignment_Unit_Tests
     {
         public void CompareTwoShapes(Shape shape1, Shape shape2)
         {
-            Assert.AreEqual(shape1.GetPosition(), shape2.GetPosition());
             Assert.AreEqual(shape1.GetColor(), shape2.GetColor());
             Assert.AreEqual(shape1.GetWidth(), shape2.GetWidth());
             Assert.AreEqual(shape1.GetType(), shape1.GetType());
@@ -19,7 +18,7 @@ namespace ASE_Assignment_Unit_Tests
             {
                 Line line1 = (Line)shape1;
                 Line line2 = (Line)shape2;
-                Assert.AreEqual(line1.GetEndPoint(), line2.GetEndPoint());
+                Assert.AreEqual(line1.GetPoints(), line2.GetPoints());
             }
         }
 
