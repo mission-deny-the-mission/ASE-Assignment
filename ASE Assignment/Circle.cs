@@ -31,6 +31,16 @@ namespace ASE_Assignment
             this.y = y;
         }
 
+        public int GetRadius()
+        {
+            return radius;
+        }
+
+        public void SetRadius(int radius)
+        {
+            this.radius = radius;
+        }
+
         public override void Paint(Graphics graphics)
         {
             Rectangle rect = new Rectangle(x - radius, y - radius, radius * 2, radius * 2);

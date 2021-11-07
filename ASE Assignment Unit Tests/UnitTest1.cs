@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ASE_Assignment;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace ASE_Assignment_Unit_Tests
 {
@@ -19,6 +20,19 @@ namespace ASE_Assignment_Unit_Tests
                 Line line1 = (Line)shape1;
                 Line line2 = (Line)shape2;
                 Assert.AreEqual(line1.GetPoints(), line2.GetPoints());
+            }
+            else if (shape1.GetType() == typeof(Circle))
+            {
+                Circle circle1 = (Circle)shape1;
+                Circle circle2 = (Circle)shape2;
+                Assert.AreEqual(circle1.GetPosition(), circle2.GetPosition());
+                Assert.AreEqual(circle1.GetRadius(), circle2.GetRadius());
+            }
+            else if (shape1.GetType().IsSubclassOf(typeof(Polygon)))
+            {
+                Polygon polygon1 = (Triangle)shape1;
+                Polygon polygon2 = (Triangle)shape2;
+                Assert.IsTrue(Enumerable.SequenceEqual(polygon1.GetPoints(), polygon2.GetPoints()));
             }
         }
 
