@@ -39,25 +39,28 @@ namespace ASE_Assignment
             // 
             // drawingArea
             // 
-            this.drawingArea.Location = new System.Drawing.Point(12, 12);
+            this.drawingArea.Location = new System.Drawing.Point(29, 33);
+            this.drawingArea.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.drawingArea.Name = "drawingArea";
-            this.drawingArea.Size = new System.Drawing.Size(420, 224);
+            this.drawingArea.Size = new System.Drawing.Size(1020, 612);
             this.drawingArea.TabIndex = 0;
             this.drawingArea.TabStop = false;
             // 
             // scriptArea
             // 
-            this.scriptArea.Location = new System.Drawing.Point(12, 255);
+            this.scriptArea.Location = new System.Drawing.Point(29, 697);
+            this.scriptArea.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.scriptArea.Multiline = true;
             this.scriptArea.Name = "scriptArea";
-            this.scriptArea.Size = new System.Drawing.Size(282, 131);
+            this.scriptArea.Size = new System.Drawing.Size(679, 351);
             this.scriptArea.TabIndex = 1;
             // 
             // executeScriptButton
             // 
-            this.executeScriptButton.Location = new System.Drawing.Point(357, 296);
+            this.executeScriptButton.Location = new System.Drawing.Point(867, 809);
+            this.executeScriptButton.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.executeScriptButton.Name = "executeScriptButton";
-            this.executeScriptButton.Size = new System.Drawing.Size(130, 23);
+            this.executeScriptButton.Size = new System.Drawing.Size(316, 63);
             this.executeScriptButton.TabIndex = 2;
             this.executeScriptButton.Text = "Execute Script";
             this.executeScriptButton.UseVisualStyleBackColor = true;
@@ -65,9 +68,10 @@ namespace ASE_Assignment
             // 
             // executeButton
             // 
-            this.executeButton.Location = new System.Drawing.Point(357, 414);
+            this.executeButton.Location = new System.Drawing.Point(867, 1132);
+            this.executeButton.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.executeButton.Name = "executeButton";
-            this.executeButton.Size = new System.Drawing.Size(75, 23);
+            this.executeButton.Size = new System.Drawing.Size(182, 63);
             this.executeButton.TabIndex = 3;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
@@ -76,21 +80,24 @@ namespace ASE_Assignment
             // commandArea
             // 
             this.commandArea.Cursor = System.Windows.Forms.Cursors.Default;
-            this.commandArea.Location = new System.Drawing.Point(13, 414);
+            this.commandArea.Location = new System.Drawing.Point(32, 1132);
+            this.commandArea.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.commandArea.Name = "commandArea";
-            this.commandArea.Size = new System.Drawing.Size(281, 23);
+            this.commandArea.Size = new System.Drawing.Size(677, 47);
             this.commandArea.TabIndex = 4;
+            this.commandArea.KeyDown += new System.Windows.Forms.KeyEventHandler(this.input_KeyDown);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 450);
+            this.ClientSize = new System.Drawing.Size(1336, 1230);
             this.Controls.Add(this.commandArea);
             this.Controls.Add(this.executeButton);
             this.Controls.Add(this.executeScriptButton);
             this.Controls.Add(this.scriptArea);
             this.Controls.Add(this.drawingArea);
+            this.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).EndInit();

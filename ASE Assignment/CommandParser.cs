@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ASE_Assignment
 {
@@ -225,16 +226,32 @@ namespace ASE_Assignment
             }
             else
             {
-                executeLine(line);
+                try
+                {
+                    executeLine(line);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
             drawingClass.update();
         }
 
         public void executeScript(string script)
         {
+            int i = 0;
             foreach (string line in script.Split('\n'))
             {
-                executeLine(line);
+                i++;
+                try
+                {
+                    executeLine(line);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(String.Format("On line {0}: {1}", i, e.Message));
+                }
             }
             drawingClass.update();
         }

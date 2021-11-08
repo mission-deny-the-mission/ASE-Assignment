@@ -32,5 +32,13 @@ namespace ASE_Assignment
             parser.executeLineHandler(commandArea.Text, scriptArea.Text);
         }
 
+        private void input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                parser.executeLineHandler(commandArea.Text, scriptArea.Text);
+            }
+        }
+
     }
 }
