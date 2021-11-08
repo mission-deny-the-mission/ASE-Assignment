@@ -10,8 +10,11 @@ namespace ASE_Assignment
         public void setPenWidth(float width);
         public float getPenWidth();
         public void drawCircle(int x, int y, int radius);
-        void drawCircle(int radius);
-        void drawTriangle((int, int) point1, (int, int) point2, (int, int) point3);
+        public void drawCircle((int, int) position, int radius);
+        public void drawCircle(int radius);
+        public void drawTriangle((int, int) point1, (int, int) point2, (int, int) point3);
+        void drawRectangle(int x, int y, int width, int height);
+        void drawRectangle(int width, int height);
         void drawTo(int endX, int endY);
         public void clear();
         public (int, int) getPosition();
@@ -80,6 +83,12 @@ namespace ASE_Assignment
             shapes.Add(circle);
         }
 
+        public void drawCircle((int, int) position, int radius)
+        {
+            Circle circle = new Circle(pen.Color, position, pen.Width, fillState, radius);
+            shapes.Add(circle);
+        }
+
         public void drawCircle(int radius)
         {
             Circle circle = new Circle(pen.Color, x, y, pen.Width, fillState, radius);
@@ -129,6 +138,19 @@ namespace ASE_Assignment
         public void update()
         {
             drawingArea.Refresh();
+        }
+
+        public void drawRectangle(int x, int y, int width, int height)
+        {
+
+            Rectangle rect = new Rectangle(pen.Color, x, y, width, height, pen.Width, fillState);
+            shapes.Add(rect);
+        }
+        
+        public void drawRectangle(int width, int height)
+        {
+            Rectangle rect = new Rectangle(pen.Color, x, y, width, height, pen.Width, fillState);
+            shapes.Add(rect);
         }
     }
 

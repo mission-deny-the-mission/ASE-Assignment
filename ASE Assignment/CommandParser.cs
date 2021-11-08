@@ -39,15 +39,15 @@ namespace ASE_Assignment
             string[] points = point.Split(',');
             if (points.Length != 2)
             {
-                throw new Exception("Invalid points entered");
+                throw new Exception("Invalid coordinate entered");
             }
-            if (Int32.TryParse(points[0], out int x) && Int32.TryParse(points[1], out int y))
+            if (int.TryParse(points[0], out int x) && int.TryParse(points[1], out int y))
             {
                 return (x, y);
             }
             else
             {
-                throw new Exception("Invalid point entered");
+                throw new Exception("Invalid coordinate entered");
             }
         }
 
@@ -68,15 +68,10 @@ namespace ASE_Assignment
                 case "circle":
                     if (words.Length == 3)
                     {
-                        string[] bits = words[1].Split(',');
-                        if (bits.Length != 2)
+                        (int, int) point = parsePoint(words[1]);
+                        if (Int32.TryParse(words[2], out int radius))
                         {
-                            throw new Exception("Invalid coordinates");
-                        }
-                        if (Int32.TryParse(bits[0], out int x) && Int32.TryParse(bits[1], out int y)
-                            && Int32.TryParse(words[2], out int radius))
-                        {
-                            drawingClass.drawCircle(x, y, radius);
+                            drawingClass.drawCircle(point, radius);
                         }
                         else
                         {
@@ -110,6 +105,35 @@ namespace ASE_Assignment
                     else
                     {
                         throw new Exception("Invalid number of operands for operation triangle");
+                    }
+                    break;
+                case "rectangle":
+                    if (words.Length == 3)
+                    {
+                        if (int.TryParse(words[1], out int width) && int.TryParse(words[2], out int height))
+                        {
+                            drawingClass.drawRectangle(width, height);
+                        }
+                        else
+                        {
+                            throw new Exception("Incorrectly formatted operands for command rectangle");
+                        }
+                    }
+                    else if(words.Length == 4)
+                    {
+                        var (x, y) = parsePoint(words[1]);
+                        if (int.TryParse(words[2], out int width) && int.TryParse(words[3], out int height))
+                        {
+                            drawingClass.drawRectangle(x, y, width, height);
+                        }
+                        else
+                        {
+                            throw new Exception("Incorrect number of operands for command rectangle");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Incorrect number of operands for command rectangle.");
                     }
                     break;
                 case "position":

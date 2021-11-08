@@ -28,7 +28,7 @@ namespace ASE_Assignment
             return pen.Color;
         }
 
-        public float GetWidth()
+        public float GetPenWidth()
         {
             return pen.Width;
         }

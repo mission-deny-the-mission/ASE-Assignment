@@ -12,7 +12,7 @@ namespace ASE_Assignment_Unit_Tests
         public void CompareTwoShapes(Shape shape1, Shape shape2)
         {
             Assert.AreEqual(shape1.GetColor(), shape2.GetColor());
-            Assert.AreEqual(shape1.GetWidth(), shape2.GetWidth());
+            Assert.AreEqual(shape1.GetPenWidth(), shape2.GetPenWidth());
             Assert.AreEqual(shape1.GetType(), shape1.GetType());
 
             if (shape1.GetType() == typeof(Line))
@@ -33,6 +33,14 @@ namespace ASE_Assignment_Unit_Tests
                 Polygon polygon1 = (Triangle)shape1;
                 Polygon polygon2 = (Triangle)shape2;
                 Assert.IsTrue(Enumerable.SequenceEqual(polygon1.GetPoints(), polygon2.GetPoints()));
+            }
+            else if (shape1.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect1 = (Rectangle)shape1;
+                Rectangle rect2 = (Rectangle)shape2;
+                Assert.AreEqual(rect1.GetPosition(), rect2.GetPosition());
+                Assert.AreEqual(rect1.GetWidth(), rect2.GetWidth());
+                Assert.AreEqual(rect1.GetHeight(), rect2.GetHeight());
             }
         }
 
@@ -116,6 +124,29 @@ namespace ASE_Assignment_Unit_Tests
             class2.drawTriangle((100, 100), (100, 200), (200, 100));
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+        }
+
+        [TestMethod]
+        public void RectangleTest1()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            string script = "position pen 50,50\n"
+                + "rectangle 50 50\n"
+                + "fill on\n"
+                + "pen blue\n"
+                + "rectangle 200,200 100 50";
+            parser.executeScript(script);
+
+            class2.setPosition(50, 50);
+            class2.drawRectangle(50, 50);
+            class2.setFillState(true);
+            class2.setPenColour((0, 0, 255, 255));
+            class2.drawRectangle(200, 200, 100, 50);
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
         }
     }
 }
