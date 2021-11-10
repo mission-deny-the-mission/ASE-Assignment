@@ -236,11 +236,8 @@ namespace ASE_Assignment
                 case "drawto":
                     if (words.Length == 2)
                     {
-                        string[] parts = words[1].Split(',');
-                        if (Int32.TryParse(parts[0], out int x) && Int32.TryParse(parts[1], out int y))
-                        {
-                            drawingClass.drawTo(x, y);
-                        }
+                        var (x, y) = parsePoint(words[1]);
+                        drawingClass.drawTo(x, y);
                     }
                     break;
                 case "clear":
