@@ -7,27 +7,37 @@ using System;
 
 namespace ASE_Assignment_Unit_Tests
 {
+
     [TestClass]
     public class CommandParserInvalidTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException), "Width is negative")]
-        public void NegativeWidthTest()
+        public void TestCommand(string command)
         {
             DebugDrawingClass drawingClass = new DebugDrawingClass(new PictureBox());
             CommandParser parser = new CommandParser(drawingClass);
 
-            parser.executeLine("pen width -1");
+            parser.executeLine(command);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException), "Width is negative")]
+        public void NegativeWidthTest()
+        {
+            TestCommand("pen width -1");
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), "invalid coordinate entered")]
         public void InvalidCoordInDrawTo()
         {
-            DebugDrawingClass drawingClass = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(drawingClass);
+            TestCommand("drawto 50,x");
+        }
 
-            parser.executeLine("drawto 50,x");
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Invalid command")]
+        public void InvalidCommandTest()
+        {
+            TestCommand("asdfsdf");
         }
     }
 }
