@@ -39,5 +39,19 @@ namespace ASE_Assignment_Unit_Tests
         {
             TestCommand("asdfsdf");
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Colour value is not a number")]
+        public void InvalidColour()
+        {
+            TestCommand("new colour name a 123 123 123");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Invalid operand for fill state command")]
+        public void InvalidFillState()
+        {
+            TestCommand("Fill asdf");
+        }
     }
 }

@@ -189,7 +189,7 @@ namespace ASE_Assignment
                         }
                         else
                         {
-                            throw new Exception("Invalid operand");
+                            throw new Exception("Invalid operand for fill state command");
                         }
                     }
                     else
