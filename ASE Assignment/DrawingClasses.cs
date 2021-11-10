@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System;
 
 namespace ASE_Assignment
 {
@@ -69,6 +70,8 @@ namespace ASE_Assignment
 
         public void setPenWidth(float width)
         {
+            if (width < 0)
+                throw new ArgumentOutOfRangeException("Width is negative");
             pen.Width = width;
         }
 

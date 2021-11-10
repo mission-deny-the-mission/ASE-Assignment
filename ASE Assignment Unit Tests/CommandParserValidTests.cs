@@ -7,7 +7,7 @@ using System.Linq;
 namespace ASE_Assignment_Unit_Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class CommandParserValidTests
     {
         public void CompareTwoShapes(Shape shape1, Shape shape2)
         {
@@ -77,7 +77,7 @@ namespace ASE_Assignment_Unit_Tests
         }
 
         [TestMethod]
-        public void ParsetClasttTest2()
+        public void ParserClassTest2()
         {
             DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
             DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
@@ -145,6 +145,26 @@ namespace ASE_Assignment_Unit_Tests
             class2.setFillState(true);
             class2.setPenColour((0, 0, 255, 255));
             class2.drawRectangle(200, 200, 100, 50);
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
+        }
+
+        [TestMethod]
+        public void WidthTest()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            parser.executeLine("pen width 6.1");
+            parser.executeLine("drawto 200,200");
+            parser.executeLine("pen width 1");
+            parser.executeLine("drawto 300,200");
+
+            class2.setPenWidth(6.1f);
+            class2.drawTo(200, 200);
+            class2.setPenWidth(1f);
+            class2.drawTo(300, 200);
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
         }

@@ -62,8 +62,26 @@ namespace ASE_Assignment
             switch (words[0].ToLower())
             {
                 case "pen":
-                    (byte, byte, byte, byte) colour = decodeColour(words[1]);
-                    drawingClass.setPenColour(colour);
+                    if (words.Length == 3 && words[1] == "width")
+                    {
+                        if (float.TryParse(words[2], out float width))
+                        {
+                            drawingClass.setPenWidth(width);
+                        }
+                        else
+                        {
+                            throw new Exception("Operand for pen width is not a valid number");
+                        }
+                    }
+                    else if ((new int[] { 2, 4, 5 }).Contains(words.Length))
+                    {
+                        (byte, byte, byte, byte) colour = decodeColour(words[1]);
+                        drawingClass.setPenColour(colour);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid number of operands for command pen");
+                    }
                     break;
                 case "circle":
                     if (words.Length == 3)
