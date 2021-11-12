@@ -364,7 +364,7 @@ namespace ASE_Assignment
         // Function to execute a whole script
         // calls the executeLine method repeatedly
         // if an error occurs decoding one of the commands it stops execution
-        // and dispays an error box with the line number to the user
+        // and displays an error box with the line number to the user
         // called by the executeScript button handler
         public void executeScript(string script)
         {
