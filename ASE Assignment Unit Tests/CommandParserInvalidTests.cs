@@ -60,5 +60,19 @@ namespace ASE_Assignment_Unit_Tests
         {
             TestCommand("pen width 5.x");
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Invalid number of operands")]
+        public void InvalidMoveTo()
+        {
+            TestCommand("MoveTo");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "invalid coordinate entered")]
+        public void InvalidCoordInMoveTo()
+        {
+            TestCommand("MoveTo 50,x");
+        }
     }
 }

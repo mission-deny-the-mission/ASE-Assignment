@@ -168,5 +168,21 @@ namespace ASE_Assignment_Unit_Tests
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
         }
+
+        [TestMethod]
+        public void MoveToTest()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            parser.executeLine("moveto 100,100");
+            parser.executeLine("circle 80");
+
+            class2.setPosition(100, 100);
+            class2.drawCircle(80);
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+        }
     }
 }

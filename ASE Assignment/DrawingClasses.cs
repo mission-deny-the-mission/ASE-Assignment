@@ -20,6 +20,7 @@ namespace ASE_Assignment
         public void clear();
         public (int, int) getPosition();
         public void setPosition(int x, int y);
+        public void setPosition((int, int) point);
         public bool getFillState();
         public void setFillState(bool fillState);
         public void update();
@@ -126,6 +127,12 @@ namespace ASE_Assignment
         {
             this.x = x;
             this.y = y;
+        }
+
+        public void setPosition((int, int) point)
+        {
+            x = point.Item1;
+            y = point.Item2;
         }
 
         public bool getFillState()

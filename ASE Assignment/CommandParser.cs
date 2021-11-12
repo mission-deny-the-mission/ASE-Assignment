@@ -244,6 +244,17 @@ namespace ASE_Assignment
                         throw new Exception("Incorrect number of operands");
                     }
                     break;
+                case "moveto":
+                    if (words.Length == 2)
+                    {
+                        (int, int) point = parsePoint(words[1]);
+                        drawingClass.setPosition(point);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid number of operands");
+                    }
+                    break;
                 case "drawto":
                     if (words.Length == 2)
                     {
