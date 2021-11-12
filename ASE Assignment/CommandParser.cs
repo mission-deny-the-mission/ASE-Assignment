@@ -21,6 +21,8 @@ namespace ASE_Assignment
             colours.Add("black", (0, 0, 0, 255));
             colours.Add("white", (255, 255, 255, 255));
         }
+
+        // function to decode a colour entered by the user into a series of bytes representing the different colour channels
         private (byte, byte, byte, byte) decodeColour(string colour)
         {
             string lowerColour = colour.ToLower();
@@ -34,6 +36,7 @@ namespace ASE_Assignment
             }
         }
 
+        // helper function to parse a coordinate entered by the user
         public (int, int) parsePoint(string point)
         {
             string[] points = point.Split(',');
@@ -51,19 +54,27 @@ namespace ASE_Assignment
             }
         }
 
+        // function to execute a command enterd by the user contained within a string
         public void executeLine(string line)
         {
+            // remove the new line character at the end of the string if it's present
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+            // if the line is empty return and do nothing
             if (line == "")
             {
                 return;
             }
+            // split the command into words based on spaces
             string[] words = line.Split(' ');
+            // switch statement to deal with the first command word
             switch (words[0].ToLower())
             {
                 case "pen":
+                    // if the command is to change the pen width and has the correct number of operands
                     if (words.Length == 3 && words[1] == "width")
                     {
+                        // try and parse the width as a float and execute the command
+                        // otherwise trigger an exception detailing the syntax error in the command
                         if (float.TryParse(words[2], out float width))
                         {
                             drawingClass.setPenWidth(width);
@@ -257,6 +268,11 @@ namespace ASE_Assignment
             }
         }
 
+        // function to execute a line
+        // calls executeLine
+        // If there is an exception triggerd it takes the error message from that and displays
+        // it to the user in a MessageBox
+        // called by the handler for the execute line button and the enter key being pressed in the command area
         public void executeLineHandler(string line, string script)
         {
             if (line == "run")
@@ -277,6 +293,11 @@ namespace ASE_Assignment
             drawingClass.update();
         }
 
+        // Function to execute a whole script
+        // calls the executeLine method repeatedly
+        // if an error occurs decoding one of the commands it stops execution
+        // and dispays an error box with the line number to the user
+        // called by the executeScript button handler
         public void executeScript(string script)
         {
             int i = 0;
@@ -290,6 +311,7 @@ namespace ASE_Assignment
                 catch (Exception e)
                 {
                     MessageBox.Show(String.Format("On line {0}: {1}", i, e.Message));
+                    break;
                 }
             }
             drawingClass.update();
