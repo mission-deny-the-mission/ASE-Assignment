@@ -124,19 +124,26 @@ namespace ASE_Assignment
                         throw new Exception("Invalid number of operands for command pen");
                     }
                     break;
+                // circle command. should take either 3 or 2 arguments
                 case "circle":
+                    // three arguments includes the postition to draw the circle in and the radius
                     if (words.Length == 3)
                     {
+                        // parse the coordinates for the position using a helper function
+                        // that is defined and implemented earlier
                         (int, int) point = parsePoint(words[1]);
                         if (Int32.TryParse(words[2], out int radius))
                         {
                             drawingClass.drawCircle(point, radius);
                         }
+                        // if the radius couldn't be parsed throw an error
                         else
                         {
                             throw new Exception("Invalid command");
                         }
                     }
+                    // if there are only two arguments the position is not included
+                    // and the current position should be used instead
                     else if (words.Length == 2)
                     {
                         if (Int32.TryParse(words[1], out int radius))
@@ -153,22 +160,29 @@ namespace ASE_Assignment
                         throw new Exception("Invalid command");
                     }
                     break;
+                // triangles have three points so needs three arguments
                 case "triangle":
                     if (words.Length == 4)
                     {
+                        // parse the three points using the helper function above
+                        // then call drawTriangle
                         (int, int) point1 = parsePoint(words[1]);
                         (int, int) point2 = parsePoint(words[2]);
                         (int, int) point3 = parsePoint(words[3]);
                         drawingClass.drawTriangle(point1, point2, point3);
                     }
+                    // if three arguments are not thrown produce an exception
                     else
                     {
                         throw new Exception("Invalid number of operands for operation triangle");
                     }
                     break;
+                // rectangle can have either three or four arguments
                 case "rectangle":
+                    // for three arguments we use the existing position
                     if (words.Length == 3)
                     {
+                        // parse the width and height and throw an exception if they are invalid
                         if (int.TryParse(words[1], out int width) && int.TryParse(words[2], out int height))
                         {
                             drawingClass.drawRectangle(width, height);
@@ -178,6 +192,7 @@ namespace ASE_Assignment
                             throw new Exception("Incorrectly formatted operands for command rectangle");
                         }
                     }
+                    // for 4 arguments we parse the coordinates and then do the same thing
                     else if(words.Length == 4)
                     {
                         var (x, y) = parsePoint(words[1]);
@@ -195,36 +210,32 @@ namespace ASE_Assignment
                         throw new Exception("Incorrect number of operands for command rectangle.");
                     }
                     break;
+                // this is for the position pen command
+                // it has three words one of which is an argument
                 case "position":
+                    // if the number of words is correct and the second one is the word pen
+                    // parse the coordinates using the helper function and set the position
+                    // contained in the drawing class
                     if (words.Length == 3 && words[1] == "pen")
                     {
-                        string[] coordsText = words[2].Split(',');
-                        if (coordsText.Length != 2)
-                        {
-                            throw new Exception("Invalid coordinates");
-                        }
-                        if (Int32.TryParse(coordsText[0], out int x) && Int32.TryParse(coordsText[1], out int y))
-                        {
-                            drawingClass.setPosition(x, y);
-                        }
-                        else
-                        {
-                            throw new Exception("Position is not a number");
-                        }
+                        var (x, y) = parsePoint(words[2]);
+                        drawingClass.setPosition(x, y);
                     }
                     else
                     {
                         throw new Exception("Invalid command");
                     }
                     break;
+                // this function takes one argument
                 case "fill":
                     if (words.Length == 2)
                     {
-                        if (words[1] == "on")
+                        // parse the argument and set the state appropriatley
+                        if (words[1].ToLower() == "on")
                         {
                             drawingClass.setFillState(true);
                         }
-                        else if (words[1] == "off")
+                        else if (words[1].ToLower() == "off")
                         {
                             drawingClass.setFillState(false);
                         }
