@@ -116,6 +116,10 @@ namespace ASE_Assignment
         public void clear()
         {
             shapes.Clear();
+            x = 0;
+            y = 0;
+            pen = new Pen(Color.Black, 2);
+            fillState = false;
         }
 
         public (int, int) getPosition()

@@ -84,10 +84,40 @@ namespace ASE_Assignment
                             throw new Exception("Operand for pen width is not a valid number");
                         }
                     }
-                    else if ((new int[] { 2, 4, 5 }).Contains(words.Length))
+                    // otherwise the command might be to change the colour
+                    // for two words this means an already defined colour
+                    else if (words.Length == 2)
                     {
                         (byte, byte, byte, byte) colour = decodeColour(words[1]);
                         drawingClass.setPenColour(colour);
+                    }
+                    // for 3 words this means a new colour without an alpha channel
+                    // here we decode each value using Byte.TryParse
+                    else if (words.Length == 4)
+                    {
+                        if (Byte.TryParse(words[1], out byte r) && Byte.TryParse(words[2], out byte g) &&
+                            Byte.TryParse(words[3], out byte b))
+                        {
+                            drawingClass.setPenColour((r, g, b, 255));
+                        }
+                        else
+                        {
+                            throw new Exception("Colour channel values should be 8-bit unsigned integers");
+                        }
+                    }
+                    // for 4 words this means a new colour with an alpha channel
+                    // once again we use TryParse but for 4 value instead of three
+                    else if (words.Length == 5)
+                    {
+                        if (Byte.TryParse(words[1], out byte r) && Byte.TryParse(words[2], out byte g) &&
+                            Byte.TryParse(words[3], out byte b) && Byte.TryParse(words[4], out byte a))
+                        {
+                            drawingClass.setPenColour((r, g, b, a));
+                        }
+                        else
+                        {
+                            throw new Exception("Colour channel values should be 8-bit unsigned integers");
+                        }
                     }
                     else
                     {

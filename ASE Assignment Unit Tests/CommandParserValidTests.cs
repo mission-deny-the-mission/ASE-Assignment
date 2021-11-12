@@ -184,5 +184,49 @@ namespace ASE_Assignment_Unit_Tests
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
         }
+
+        [TestMethod]
+        public void ClearTest()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            parser.executeLine("moveto 200,200");
+            parser.executeLine("pen 200 200 200 200");
+            parser.executeLine("fill on");
+            parser.executeLine("circle 40");
+            parser.executeLine("clear");
+
+            parser.executeLine("rectangle 100 100");
+
+            class2.drawRectangle(100, 100);
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+        }
+
+        [TestMethod]
+        public void PenColourTest()
+        {
+            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
+            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
+            CommandParser parser = new CommandParser(class1);
+
+            parser.executeLine("pen 128 128 0 255");
+            parser.executeLine("circle 50");
+            parser.executeLine("pen 0 0 0");
+            parser.executeLine("rectangle 100,100 80 80");
+            parser.executeLine("pen red");
+            parser.executeLine("triangle 200,200 300,200 200,300");
+
+            class2.setPenColour((128, 128, 0, 255));
+            class2.drawCircle(50);
+            class2.setPenColour((0, 0, 0, 255));
+            class2.drawRectangle(100, 100, 80, 80);
+            class2.setPenColour((255, 0, 0, 255));
+            class2.drawTriangle((200, 200), (300, 200), (200, 300));
+
+            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 3);
+        }
     }
 }
