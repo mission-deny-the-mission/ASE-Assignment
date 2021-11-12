@@ -12,6 +12,15 @@ namespace ASE_Assignment
         protected int radius;
         protected int x, y;
 
+        /// <summary>
+        /// Constructor for making a new circle with seperate arguments for the x and y coordinate
+        /// </summary>
+        /// <param name="colour">what colour the circle should be</param>
+        /// <param name="x">the x coordinate the center of the circle should be on</param>
+        /// <param name="y">the y coordinate the center of the circle should be on</param>
+        /// <param name="penWidth">The width of the circle if it's not filled. Is not used if it is filled</param>
+        /// <param name="fillState">True for a filled shape and false for an outline</param>
+        /// <param name="radius">radius of the circle (length from center to outer edge)</param>
         public Circle(Color colour, int x, int y, float penWidth, bool fillState, int radius)
             : base (colour, penWidth, fillState)
         {
@@ -20,6 +29,14 @@ namespace ASE_Assignment
             this.y = y;
         }
 
+        /// <summary>
+        /// Constructor for creating a new circle using one argument that is a tuple for the position/coordinates
+        /// </summary>
+        /// <param name="colour">what colour the circle should be</param>
+        /// <param name="position">coordinates/position where the center of the circle should be</param>
+        /// <param name="penWidth">The width of the circle if it's not filled. Is not used if it is filled</param>
+        /// <param name="fillState">True for a filled shape and false for an outline</param>
+        /// <param name="radius">radius of the circle (length from center to outer edge)</param>
         public Circle(Color colour, (int, int) position, float penWidth, bool fillState, int radius)
             : base(colour, penWidth, fillState)
         {
@@ -53,6 +70,10 @@ namespace ASE_Assignment
             this.radius = radius;
         }
 
+        /// <summary>
+        /// Function to paint the circle onto a Graphics class
+        /// </summary>
+        /// <param name="graphics">graphics class to paint onto</param>
         public override void Paint(Graphics graphics)
         {
             System.Drawing.Rectangle rect = new System.Drawing.Rectangle(x - radius, y - radius, radius * 2, radius * 2);
