@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ASE_Assignment
@@ -54,15 +48,16 @@ namespace ASE_Assignment
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    // get the file path and open it
                     filePath = openFileDialog.FileName;
-
                     var fileStream = openFileDialog.OpenFile();
 
+                    // Open a file reader
                     using (StreamReader reader = new StreamReader(fileStream))
                     {
-                        fileContent = reader.ReadToEnd();
-
-                        scriptArea.Text = fileContent;
+                        // get the contents of the file and put it in the script area
+                        scriptArea.Text = reader.ReadToEnd();
+                        reader.Close();
                     }
 
                 }
@@ -81,8 +76,12 @@ namespace ASE_Assignment
             {
                 if ((myStream = saveFileDialog.OpenFile()) != null)
                 {
+                    // write the contents of the textArea to a file using a StreamWriter
                     using (StreamWriter writer = new StreamWriter(myStream))
+                    {
                         writer.Write(scriptArea.Text);
+                        writer.Close();
+                    }
                     myStream.Close();
                 }
             }
