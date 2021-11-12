@@ -53,5 +53,12 @@ namespace ASE_Assignment_Unit_Tests
         {
             TestCommand("Fill asdf");
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Operand for pen width is not a valid number")]
+        public void InvalidPenWidth()
+        {
+            TestCommand("pen width 5.x");
+        }
     }
 }

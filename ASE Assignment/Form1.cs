@@ -40,5 +40,28 @@ namespace ASE_Assignment
             }
         }
 
+        private void openScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                // openFileDialog.InitialDirectory = "";
+                openFileDialog.Filter = "";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+
+
+
+                }
+            }
+        }
+
+        private void saveScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
