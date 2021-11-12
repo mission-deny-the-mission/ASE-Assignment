@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +49,21 @@ namespace ASE_Assignment
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 // openFileDialog.InitialDirectory = "";
-                openFileDialog.Filter = "";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog.FileName;
 
+                    var fileStream = openFileDialog.OpenFile();
 
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        fileContent = reader.ReadToEnd();
+
+                        scriptArea.Text = fileContent;
+                    }
 
                 }
             }
@@ -61,7 +71,21 @@ namespace ASE_Assignment
 
         private void saveScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Stream myStream;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
 
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog.OpenFile()) != null)
+                {
+                    using (StreamWriter writer = new StreamWriter(myStream))
+                        writer.Write(scriptArea.Text);
+                    myStream.Close();
+                }
+            }
         }
     }
 }
