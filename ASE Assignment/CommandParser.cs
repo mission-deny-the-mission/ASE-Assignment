@@ -239,6 +239,7 @@ namespace ASE_Assignment
                         {
                             drawingClass.setFillState(false);
                         }
+                        // if the fill state is not valid throw an exception
                         else
                         {
                             throw new Exception("Invalid operand for fill state command");
@@ -249,9 +250,14 @@ namespace ASE_Assignment
                         throw new Exception("Invalid number of operands");
                     }
                     break;
+                // new colour command currently used to define a new colour
                 case "new":
+                    // takes either 4 or 5 arguments
+                    // the first argument is the name of the new colour and the rest are the colour values
+                    // with or without an alpha channel value
                     if (words.Length == 6)
                     {
+                        // if the second word is indeed colour
                         if (words[1] == "colour" || words[1] == "color")
                         {
                             if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
@@ -267,6 +273,7 @@ namespace ASE_Assignment
                     }
                     else if (words.Length == 7)
                     {
+                        // if the second word is indeed colour
                         if (words[1] == "colour" || words[1] == "color")
                         {
                             if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
@@ -285,9 +292,12 @@ namespace ASE_Assignment
                         throw new Exception("Incorrect number of operands");
                     }
                     break;
+                // moveto command that takes an argument for the position
                 case "moveto":
+                    // make sure they have actually supplied the required argument or throw an error
                     if (words.Length == 2)
                     {
+                        // parse the point using the helper function and set the position
                         (int, int) point = parsePoint(words[1]);
                         drawingClass.setPosition(point);
                     }
@@ -296,6 +306,7 @@ namespace ASE_Assignment
                         throw new Exception("Invalid number of operands");
                     }
                     break;
+                // drawto command that takes an argument for the position
                 case "drawto":
                     if (words.Length == 2)
                     {
@@ -303,17 +314,22 @@ namespace ASE_Assignment
                         drawingClass.drawTo(x, y);
                     }
                     break;
+                // clear command that shouldn't take any arguments
                 case "clear":
                     if (words.Length == 1)
                     {
                         drawingClass.clear();
+                        colours.Clear();
+                        colours.Add("red", (255, 0, 0, 255));
+                        colours.Add("green", (0, 255, 0, 255));
+                        colours.Add("blue", (0, 0, 255, 255));
+                        colours.Add("black", (0, 0, 0, 255));
+                        colours.Add("white", (255, 255, 255, 255));
                     }
-                    colours.Clear();
-                    colours.Add("red", (255, 0, 0, 255));
-                    colours.Add("green", (0, 255, 0, 255));
-                    colours.Add("blue", (0, 0, 255, 255));
-                    colours.Add("black", (0, 0, 0, 255));
-                    colours.Add("white", (255, 255, 255, 255));
+                    else
+                    {
+                        throw new Exception("Invalid number of operands");
+                    }
                     break;
                 default:
                     throw new Exception("Invalid command");
