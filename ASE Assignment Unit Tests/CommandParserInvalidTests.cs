@@ -74,5 +74,12 @@ namespace ASE_Assignment_Unit_Tests
         {
             TestCommand("MoveTo 50,x");
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Invalid number of operands for command drawto")]
+        public void InvalidMoveToNumberOfArguments()
+        {
+            TestCommand("MoveTo");
+        }
     }
 }

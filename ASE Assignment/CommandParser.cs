@@ -315,7 +315,7 @@ namespace ASE_Assignment
                     }
                     else
                     {
-                        throw new Exception("Invalid number of operands for command drawto")
+                        throw new Exception("Invalid number of operands for command drawto");
                     }
                     break;
                 // clear command that shouldn't take any arguments
