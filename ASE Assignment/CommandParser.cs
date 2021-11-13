@@ -313,6 +313,10 @@ namespace ASE_Assignment
                         var (x, y) = parsePoint(words[1]);
                         drawingClass.drawTo(x, y);
                     }
+                    else
+                    {
+                        throw new Exception("Invalid number of operands for command drawto")
+                    }
                     break;
                 // clear command that shouldn't take any arguments
                 case "clear":
