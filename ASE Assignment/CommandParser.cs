@@ -298,8 +298,7 @@ namespace ASE_Assignment
                     if (words.Length == 2)
                     {
                         // parse the point using the helper function and set the position
-                        (int, int) point = parsePoint(words[1]);
-                        drawingClass.setPosition(point);
+                        drawingClass.setPosition(parsePoint(words[1]));
                     }
                     else
                     {
