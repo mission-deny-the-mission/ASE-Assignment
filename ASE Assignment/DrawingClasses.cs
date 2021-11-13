@@ -27,7 +27,6 @@ namespace ASE_Assignment
     }
     public class DrawingClass : Drawer
     {
-        (byte, byte, byte, byte) penColour;
         private Pen pen;
         protected List<Shape> shapes;
         protected int x, y;
