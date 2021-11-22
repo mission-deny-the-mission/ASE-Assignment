@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ASE_Assignment
@@ -9,6 +10,8 @@ namespace ASE_Assignment
     {
         CommandParser parser;
         DrawingClass drawer;
+        Thread changeColourThread;
+        //Boolean flag = false;
         public Form1()
         {
             InitializeComponent();
@@ -16,6 +19,19 @@ namespace ASE_Assignment
             parser = new CommandParser(drawer);
             drawingArea.BackColor = Color.White;
             drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
+            changeColourThread = new Thread(this.changeColour);
+            changeColourThread.Start();
+        }
+
+        public void changeColour()
+        {
+            while(true)
+            {
+                executeButton.BackColor = Color.Red;
+                Thread.Sleep(1000);
+                executeButton.BackColor = Color.Green;
+                Thread.Sleep(1000);
+            }
         }
         private void execute_script(object sender, EventArgs e)
         {
