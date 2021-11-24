@@ -11,7 +11,7 @@ namespace ASE_Assignment
         CommandParser parser;
         DrawingClass drawer;
         Thread changeColourThread;
-        //Boolean flag = false;
+        Boolean flag = true;
         public Form1()
         {
             InitializeComponent();
@@ -23,12 +23,20 @@ namespace ASE_Assignment
             changeColourThread.Start();
         }
 
+        override protected void OnFormClosing(System.Windows.Forms.FormClosingEventArgs e)
+        {
+            System.Console.WriteLine("TEST");
+            flag = false;
+        }
+
         public void changeColour()
         {
-            while(true)
+            while(flag)
             {
                 executeButton.BackColor = Color.Red;
                 Thread.Sleep(1000);
+                if (!flag)
+                    break;
                 executeButton.BackColor = Color.Green;
                 Thread.Sleep(1000);
             }
