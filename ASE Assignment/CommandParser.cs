@@ -11,6 +11,8 @@ namespace ASE_Assignment
     {
         Drawer drawingClass;
         Dictionary<string, (byte, byte, byte, byte)> colours = new Dictionary<string, (byte, byte, byte, byte)>();
+        Stack<Scope> scopes = new Stack<Scope>();
+        ExpressionHandler expressionHandler;
 
         public CommandParser(Drawer drawingClass)
         {
@@ -20,6 +22,8 @@ namespace ASE_Assignment
             colours.Add("blue", (0, 0, 255, 255));
             colours.Add("black", (0, 0, 0, 255));
             colours.Add("white", (255, 255, 255, 255));
+            scopes.Push(new Scope());
+            expressionHandler = new ExpressionHandler(scopes);
         }
 
         // function to decode a colour entered by the user into a series of bytes representing the different colour channels
@@ -44,7 +48,7 @@ namespace ASE_Assignment
             {
                 throw new Exception("Invalid coordinate entered");
             }
-            if (int.TryParse(points[0], out int x) && int.TryParse(points[1], out int y))
+            if (expressionHandler.TryEvalValue(points[0], out int x) && expressionHandler.TryEvalValue(points[1], out int y))
             {
                 return (x, y);
             }
@@ -57,6 +61,7 @@ namespace ASE_Assignment
         // function to execute a command enterd by the user contained within a string
         public void executeLine(string line)
         {
+            expressionHandler = new ExpressionHandler(scopes);
             // remove the new line character at the end of the string if it's present
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             // if the line is empty return and do nothing
@@ -92,32 +97,23 @@ namespace ASE_Assignment
                         drawingClass.setPenColour(colour);
                     }
                     // for 3 words this means a new colour without an alpha channel
-                    // here we decode each value using Byte.TryParse
+                    // here we decode each value using expressionHandler.TryByte
                     else if (words.Length == 4)
                     {
-                        if (Byte.TryParse(words[1], out byte r) && Byte.TryParse(words[2], out byte g) &&
-                            Byte.TryParse(words[3], out byte b))
-                        {
-                            drawingClass.setPenColour((r, g, b, 255));
-                        }
-                        else
-                        {
-                            throw new Exception("Colour channel values should be 8-bit unsigned integers");
-                        }
+                        byte r = expressionHandler.EvaluateByte(words[1]);
+                        byte g = expressionHandler.EvaluateByte(words[2]);
+                        byte b = expressionHandler.EvaluateByte(words[3]);
+                        drawingClass.setPenColour((r, g, b, 255));
                     }
                     // for 4 words this means a new colour with an alpha channel
                     // once again we use TryParse but for 4 value instead of three
                     else if (words.Length == 5)
                     {
-                        if (Byte.TryParse(words[1], out byte r) && Byte.TryParse(words[2], out byte g) &&
-                            Byte.TryParse(words[3], out byte b) && Byte.TryParse(words[4], out byte a))
-                        {
-                            drawingClass.setPenColour((r, g, b, a));
-                        }
-                        else
-                        {
-                            throw new Exception("Colour channel values should be 8-bit unsigned integers");
-                        }
+                        byte r = expressionHandler.EvaluateByte(words[1]);
+                        byte g = expressionHandler.EvaluateByte(words[2]);
+                        byte b = expressionHandler.EvaluateByte(words[3]);
+                        byte a = expressionHandler.EvaluateByte(words[4]);
+                        drawingClass.setPenColour((r, g, b, a));
                     }
                     else
                     {
@@ -132,7 +128,7 @@ namespace ASE_Assignment
                         // parse the coordinates for the position using a helper function
                         // that is defined and implemented earlier
                         (int, int) point = parsePoint(words[1]);
-                        if (Int32.TryParse(words[2], out int radius))
+                        if (expressionHandler.TryEvalValue(words[2], out int radius))
                         {
                             drawingClass.drawCircle(point, radius);
                         }
@@ -146,7 +142,7 @@ namespace ASE_Assignment
                     // and the current position should be used instead
                     else if (words.Length == 2)
                     {
-                        if (Int32.TryParse(words[1], out int radius))
+                        if (expressionHandler.TryEvalValue(words[1], out int radius))
                         {
                             drawingClass.drawCircle(radius);
                         }
@@ -183,7 +179,7 @@ namespace ASE_Assignment
                     if (words.Length == 3)
                     {
                         // parse the width and height and throw an exception if they are invalid
-                        if (int.TryParse(words[1], out int width) && int.TryParse(words[2], out int height))
+                        if (expressionHandler.TryEvalValue(words[1], out int width) && expressionHandler.TryEvalValue(words[2], out int height))
                         {
                             drawingClass.drawRectangle(width, height);
                         }
@@ -196,7 +192,7 @@ namespace ASE_Assignment
                     else if(words.Length == 4)
                     {
                         var (x, y) = parsePoint(words[1]);
-                        if (int.TryParse(words[2], out int width) && int.TryParse(words[3], out int height))
+                        if (expressionHandler.TryEvalValue(words[2], out int width) && expressionHandler.TryEvalValue(words[3], out int height))
                         {
                             drawingClass.drawRectangle(x, y, width, height);
                         }
@@ -260,8 +256,8 @@ namespace ASE_Assignment
                         // if the second word is indeed colour
                         if (words[1] == "colour" || words[1] == "color")
                         {
-                            if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
-                                Byte.TryParse(words[5], out byte b))
+                            if (expressionHandler.TryByte(words[3], out byte r) && expressionHandler.TryByte(words[4], out byte g) &&
+                                expressionHandler.TryByte(words[5], out byte b))
                             {
                                 colours.Add(words[2], (r, g, b, 255));
                             }
@@ -276,8 +272,8 @@ namespace ASE_Assignment
                         // if the second word is indeed colour
                         if (words[1] == "colour" || words[1] == "color")
                         {
-                            if (Byte.TryParse(words[3], out byte r) && Byte.TryParse(words[4], out byte g) &&
-                                Byte.TryParse(words[5], out byte b) && Byte.TryParse(words[6], out byte a))
+                            if (expressionHandler.TryByte(words[3], out byte r) && expressionHandler.TryByte(words[4], out byte g) &&
+                                expressionHandler.TryByte(words[5], out byte b) && expressionHandler.TryByte(words[6], out byte a))
                             {
                                 colours.Add(words[2], (r, g, b, a));
                             }
@@ -335,7 +331,21 @@ namespace ASE_Assignment
                     }
                     break;
                 default:
-                    throw new Exception("Invalid command");
+                    if (words[1] == "=")
+                    {
+                        if (words.Length < 3)
+                        {
+                            throw new Exception();
+                        }
+                        string expression = String.Join(" ", words.Skip(2).ToArray());
+                        int value = expressionHandler.Evaluate(expression);
+                        scopes.First().AddVariable(words[0], value);
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                    break;
             }
         }
 
