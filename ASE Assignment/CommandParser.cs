@@ -61,6 +61,11 @@ namespace ASE_Assignment
             }
         }
 
+        public void executeLine(string line)
+        {
+            executeLine(line, 0);
+        }
+
         // function to execute a command enterd by the user contained within a string
         public void executeLine(string line, int lineno)
         {
@@ -397,7 +402,7 @@ namespace ASE_Assignment
             {
                 try
                 {
-                    executeLine(line, 0);
+                    executeLine(line);
                 }
                 catch (Exception e)
                 {
@@ -428,7 +433,14 @@ namespace ASE_Assignment
                 }
                 if (lineUpdate)
                 {
-                    i = context.lastWhile.headLineNo - 1;
+                    try
+                    {
+                        i = context.lastWhile.headLineNo - 1;
+                    }
+                    catch (Exception e)
+                    {
+                        // not sure yet
+                    }
                 }
             }
             drawingClass.update();
