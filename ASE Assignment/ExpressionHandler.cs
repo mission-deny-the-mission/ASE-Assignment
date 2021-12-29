@@ -5,31 +5,16 @@ using System.Data;
 
 namespace ASE_Assignment
 {
-    class Scope
-    {
-        public Dictionary<string, int> variables;
-        public Scope()
-        {
-            variables = new Dictionary<string, int>();
-        }
-        public void AddVariable(string name, int value)
-        {
-            variables[name] = value;
-        }
-
-    }
-
     class ExpressionHandler
     {
-        Stack<Scope> scopes;
-        public ExpressionHandler(Stack<Scope> scopes)
+        Context context;
+        public ExpressionHandler(Context context)
         {
-            this.scopes = scopes;
+            this.context = context;
         }
-        public int Evaluate(string equation)
+        protected string ReplaceVariables(string equation)
         {
-            DataTable dt = new DataTable();
-            foreach (Scope scope in scopes)
+            foreach (Scope scope in context.scopes)
             {
                 foreach (KeyValuePair<string, int> variable in scope.variables)
                 {
@@ -39,8 +24,37 @@ namespace ASE_Assignment
                     }
                 }
             }
+            return equation;
+        }
+        public int Evaluate(string equation)
+        {
+            DataTable dt = new DataTable();
+            equation = ReplaceVariables(equation);
             double rawValue = Convert.ToDouble(dt.Compute(equation, ""));
             return (int) Math.Floor(rawValue);
+        }
+        public bool EvaluateCondition(string condition)
+        {
+            DataTable dt = new DataTable();
+            bool containsOperation = false;
+            foreach (string operation in new string[] { "<", ">", "==", "!=", "<=", ">=" })
+            {
+                if (condition.Contains(operation))
+                {
+                    containsOperation = true;
+                    break;
+                }
+            }
+            if (containsOperation)
+            {
+                condition = ReplaceVariables(condition);
+                bool result = (bool)dt.Compute(condition, "");
+                return result;
+            }
+            else
+            {
+                throw new Exception("Operation string does not contain a boolean operation.");
+            }
         }
         public int EvaluateValue(string name)
         {
@@ -48,7 +62,7 @@ namespace ASE_Assignment
             {
                 return result;
             }
-            foreach(Scope scope in scopes)
+            foreach(Scope scope in context.scopes)
             {
                 if (scope.variables.ContainsKey(name))
                 {
@@ -76,7 +90,7 @@ namespace ASE_Assignment
             {
                 return result;
             }
-            foreach (Scope scope in scopes)
+            foreach (Scope scope in context.scopes)
             {
                 var variables = scope.variables;
                 if (variables.ContainsKey(toEval))
@@ -106,6 +120,18 @@ namespace ASE_Assignment
                 result = 0;
                 return false;
             }
+        }
+        public void AddUpdateVariable(string name, int value)
+        {
+            foreach (Scope scope in context.scopes)
+            {
+                if (scope.HasVariable(name))
+                {
+                    scope.AddUpdateVariable(name, value);
+                    return;
+                }
+            }
+            context.lastScope.AddUpdateVariable(name, value);
         }
     }
 }
