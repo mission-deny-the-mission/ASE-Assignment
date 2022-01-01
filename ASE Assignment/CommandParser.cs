@@ -191,64 +191,13 @@ namespace ASE_Assignment
                         }
                         break;
                     case "method":
-                        int afterCommandWord = 7;
-                        string name = "";
-                        int currentPosition = 0;
-                        for (currentPosition = afterCommandWord; line[currentPosition] != '('; currentPosition++)
-                        {
-                            name = name + line[currentPosition];
-                        }
-                        string parameterString = "";
-                        currentPosition++;
-                        for (; line[currentPosition] != ')'; currentPosition++)
-                        {
-                            parameterString = parameterString + line[currentPosition];
-                        }
-                        if (parameterString.Length > 0)
-                        {
-                            Stack<string> parameters = new Stack<string>();
-                            string paramname = "";
-                            int i;
-                            bool spacePermitted = true;
-                            for (i = 0; i < parameterString.Length; i++)
-                            {
-                                char currentchar = parameterString[i];
-                                if (currentchar == ',')
-                                {
-                                    if (paramname.Length == 0)
-                                        throw new Exception("Cannot have an empty paramater name");
-                                    parameters.Push(paramname);
-                                    spacePermitted = true;
-                                }
-                                else if (currentchar == ' ' && spacePermitted) { }
-                                else if (currentchar == ' ' && !spacePermitted)
-                                {
-                                    throw new Exception("Canot have a space inside a paramter name");
-                                }
-                                else
-                                {
-                                    if (spacePermitted)
-                                        spacePermitted = false;
-                                    paramname = paramname + currentchar;
-                                }
-                            }
-                            parameters.Push(paramname);
-                            if (i != parameterString.Length)
-                                throw new Exception("List of parameters is invalid");
-                            methodStartLine = lineno;
-                            methodName = name;
-                            methodParameters = parameters.ToArray();
-                            methodInProgress = true;
-                            processLine = false;
-                        }
-                        else
-                        {
-                            methodStartLine = lineno;
-                            methodName = name;
-                            methodParameters = new string[] { };
-                            methodInProgress = true;
-                            processLine = false;
-                        }
+                        string name;
+                        string[] parameters2 = parseParametersAndName(line.Substring(7), out name);
+                        methodStartLine = lineno;
+                        methodName = name;
+                        methodParameters = parameters2;
+                        methodInProgress = true;
+                        processLine = false;
                         break;
                     case "endmethod":
                         lineNumber = context.ExitMethod();
