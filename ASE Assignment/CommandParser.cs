@@ -13,6 +13,8 @@ namespace ASE_Assignment
         Dictionary<string, (byte, byte, byte, byte)> colours = new Dictionary<string, (byte, byte, byte, byte)>();
         Context context;
         ExpressionHandler expressionHandler;
+        ShapeFactory shapeFactory;
+
         bool lineUpdate;
         bool processLine;
 
@@ -34,6 +36,7 @@ namespace ASE_Assignment
             context = new Context();
             expressionHandler = new ExpressionHandler(context);
             processLine = true;
+            shapeFactory = new ShapeFactory(context);
         }
 
         // function to decode a colour entered by the user into a series of bytes representing the different colour channels
@@ -144,6 +147,12 @@ namespace ASE_Assignment
             {
                 switch (words[0].ToLower())
                 {
+                    case "triangle":
+                    case "rectangle":
+                    case "circle":
+                    case "drawto":
+                        drawingClass.addShape(shapeFactory.parseShape(line));
+                        break;
                     case "while":
                         if (words.Length > 1)
                         {
@@ -210,7 +219,7 @@ namespace ASE_Assignment
                             // otherwise trigger an exception detailing the syntax error in the command
                             if (float.TryParse(words[2], out float width))
                             {
-                                drawingClass.setPenWidth(width);
+                                shapeFactory.penWidth = width;
                             }
                             else
                             {
@@ -222,7 +231,7 @@ namespace ASE_Assignment
                         else if (words.Length == 2)
                         {
                             (byte, byte, byte, byte) colour = decodeColour(words[1]);
-                            drawingClass.setPenColour(colour);
+                            shapeFactory.byteColour = colour;
                         }
                         // for 3 words this means a new colour without an alpha channel
                         // here we decode each value using expressionHandler.TryByte
@@ -231,7 +240,7 @@ namespace ASE_Assignment
                             byte r = expressionHandler.EvaluateByte(words[1]);
                             byte g = expressionHandler.EvaluateByte(words[2]);
                             byte b = expressionHandler.EvaluateByte(words[3]);
-                            drawingClass.setPenColour((r, g, b, 255));
+                            shapeFactory.byteColour = (r, g, b, 255);
                         }
                         // for 4 words this means a new colour with an alpha channel
                         // once again we use TryParse but for 4 value instead of three
@@ -241,97 +250,11 @@ namespace ASE_Assignment
                             byte g = expressionHandler.EvaluateByte(words[2]);
                             byte b = expressionHandler.EvaluateByte(words[3]);
                             byte a = expressionHandler.EvaluateByte(words[4]);
-                            drawingClass.setPenColour((r, g, b, a));
+                            shapeFactory.byteColour = (r, g, b, a);
                         }
                         else
                         {
                             throw new Exception("Invalid number of operands for command pen");
-                        }
-                        break;
-                    // circle command. should take either 3 or 2 arguments
-                    case "circle":
-                        // three arguments includes the postition to draw the circle in and the radius
-                        if (words.Length == 3)
-                        {
-                            // parse the coordinates for the position using a helper function
-                            // that is defined and implemented earlier
-                            (int, int) point = parsePoint(words[1]);
-                            if (expressionHandler.TryEvalValue(words[2], out int radius))
-                            {
-                                drawingClass.drawCircle(point, radius);
-                            }
-                            // if the radius couldn't be parsed throw an error
-                            else
-                            {
-                                throw new Exception("Invalid command");
-                            }
-                        }
-                        // if there are only two arguments the position is not included
-                        // and the current position should be used instead
-                        else if (words.Length == 2)
-                        {
-                            if (expressionHandler.TryEvalValue(words[1], out int radius))
-                            {
-                                drawingClass.drawCircle(radius);
-                            }
-                            else
-                            {
-                                throw new Exception("Invalid operand for command circle");
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Invalid command");
-                        }
-                        break;
-                    // triangles have three points so needs three arguments
-                    case "triangle":
-                        if (words.Length == 4)
-                        {
-                            // parse the three points using the helper function above
-                            // then call drawTriangle
-                            (int, int) point1 = parsePoint(words[1]);
-                            (int, int) point2 = parsePoint(words[2]);
-                            (int, int) point3 = parsePoint(words[3]);
-                            drawingClass.drawTriangle(point1, point2, point3);
-                        }
-                        // if three arguments are not thrown produce an exception
-                        else
-                        {
-                            throw new Exception("Invalid number of operands for operation triangle");
-                        }
-                        break;
-                    // rectangle can have either three or four arguments
-                    case "rectangle":
-                        // for three arguments we use the existing position
-                        if (words.Length == 3)
-                        {
-                            // parse the width and height and throw an exception if they are invalid
-                            if (expressionHandler.TryEvalValue(words[1], out int width) && expressionHandler.TryEvalValue(words[2], out int height))
-                            {
-                                drawingClass.drawRectangle(width, height);
-                            }
-                            else
-                            {
-                                throw new Exception("Incorrectly formatted operands for command rectangle");
-                            }
-                        }
-                        // for 4 arguments we parse the coordinates and then do the same thing
-                        else if (words.Length == 4)
-                        {
-                            var (x, y) = parsePoint(words[1]);
-                            if (expressionHandler.TryEvalValue(words[2], out int width) && expressionHandler.TryEvalValue(words[3], out int height))
-                            {
-                                drawingClass.drawRectangle(x, y, width, height);
-                            }
-                            else
-                            {
-                                throw new Exception("Incorrect number of operands for command rectangle");
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Incorrect number of operands for command rectangle.");
                         }
                         break;
                     // this is for the position pen command
@@ -343,7 +266,8 @@ namespace ASE_Assignment
                         if (words.Length == 3 && words[1] == "pen")
                         {
                             var (x, y) = parsePoint(words[2]);
-                            drawingClass.setPosition(x, y);
+                            shapeFactory.x = x;
+                            shapeFactory.y = y;
                         }
                         else
                         {
@@ -357,11 +281,11 @@ namespace ASE_Assignment
                             // parse the argument and set the state appropriatley
                             if (words[1].ToLower() == "on")
                             {
-                                drawingClass.setFillState(true);
+                                shapeFactory.fillState = true;
                             }
                             else if (words[1].ToLower() == "off")
                             {
-                                drawingClass.setFillState(false);
+                                shapeFactory.fillState = false;
                             }
                             // if the fill state is not valid throw an exception
                             else
@@ -422,29 +346,20 @@ namespace ASE_Assignment
                         if (words.Length == 2)
                         {
                             // parse the point using the helper function and set the position
-                            drawingClass.setPosition(parsePoint(words[1]));
+                            var (x, y) = parsePoint(words[1]);
+                            shapeFactory.x = x;
+                            shapeFactory.y = y;
                         }
                         else
                         {
                             throw new Exception("Invalid number of operands");
                         }
                         break;
-                    // drawto command that takes an argument for the position
-                    case "drawto":
-                        if (words.Length == 2)
-                        {
-                            var (x, y) = parsePoint(words[1]);
-                            drawingClass.drawTo(x, y);
-                        }
-                        else
-                        {
-                            throw new Exception("Invalid number of operands for command drawto");
-                        }
-                        break;
                     // clear command that shouldn't take any arguments
                     case "clear":
                         if (words.Length == 1)
                         {
+                            shapeFactory.Clear();
                             drawingClass.clear();
                             colours.Clear();
                             colours.Add("red", (255, 0, 0, 255));
