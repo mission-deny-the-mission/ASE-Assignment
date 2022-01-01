@@ -16,6 +16,13 @@ namespace ASE_Assignment
         bool lineUpdate;
         bool processLine;
 
+        int methodStartLine;
+        string methodName;
+        string[] methodParameters;
+        bool methodInProgress = false;
+
+        int lineNumber;
+
         public CommandParser(Drawer drawingClass)
         {
             this.drawingClass = drawingClass;
@@ -61,6 +68,58 @@ namespace ASE_Assignment
             }
         }
 
+        protected string[] parseParametersAndName(string stringToParse, out string name)
+        {
+            name = "";
+            int currentPosition;
+            for (currentPosition = 0; stringToParse[currentPosition] != '('; currentPosition++)
+            {
+                name = name + stringToParse[currentPosition];
+            }
+            string parameterString = "";
+            for (currentPosition++; stringToParse[currentPosition] != ')'; currentPosition++)
+            {
+                parameterString = parameterString + stringToParse[currentPosition];
+            }
+            if (parameterString.Length > 0)
+            {
+                Stack<string> parameters = new Stack<string>();
+                string paramname = "";
+                int i;
+                bool spacePermitted = true;
+                for (i = 0; i < parameterString.Length; i++)
+                {
+                    char currentchar = parameterString[i];
+                    if (currentchar == ',')
+                    {
+                        if (paramname.Length == 0)
+                            throw new Exception("Cannot have an empty paramater name");
+                        parameters.Push(paramname);
+                        spacePermitted = true;
+                    }
+                    else if (currentchar == ' ' && spacePermitted) { }
+                    else if (currentchar == ' ' && !spacePermitted)
+                    {
+                        throw new Exception("Canot have a space inside a paramter name");
+                    }
+                    else
+                    {
+                        if (spacePermitted)
+                            spacePermitted = false;
+                        paramname = paramname + currentchar;
+                    }
+                }
+                parameters.Push(paramname);
+                if (i != parameterString.Length)
+                    throw new Exception("List of parameters is invalid");
+                return parameters.ToArray();
+            }
+            else
+            {
+                return new string[] { };
+            }
+        }
+
         public void executeLine(string line)
         {
             executeLine(line, 0);
@@ -98,6 +157,102 @@ namespace ASE_Assignment
                         break;
                     case "endwhile":
                         lineUpdate = true;
+                        break;
+                    case "if":
+                        if (words.Length > 1)
+                        {
+                            string expression = String.Join(" ", words, 1, words.Length - 1);
+                            context.AddIf(lineno, expression);
+                            if (!context.lastIf.evaluate())
+                            {
+                                processLine = false;
+                            }
+                        }
+                        break;
+                    case "endif":
+                        if (words.Length > 1)
+                            throw new Exception("endif does not need any operands.");
+                        context.removeIf();
+                        break;
+                    case "call":
+                        if (line.Length < 8)
+                        {
+                            throw new Exception("Invalid method call");
+                        }
+                        else
+                        {
+                            string nameToCall;
+                            string[] parameters = parseParametersAndName(line.Substring(5), out nameToCall);
+                            int[] values = new int[parameters.Length];
+                            for (int i = 0; i < parameters.Length; i++)
+                            {
+                                values[i] = expressionHandler.EvaluateValue(parameters[i]);
+                            }
+                            lineNumber = context.InstantiateMethod(nameToCall, values);
+                        }
+                        break;
+                    case "method":
+                        int afterCommandWord = 7;
+                        string name = "";
+                        int currentPosition = 0;
+                        for (currentPosition = afterCommandWord; line[currentPosition] != '('; currentPosition++)
+                        {
+                            name = name + line[currentPosition];
+                        }
+                        string parameterString = "";
+                        currentPosition++;
+                        for (; line[currentPosition] != ')'; currentPosition++)
+                        {
+                            parameterString = parameterString + line[currentPosition];
+                        }
+                        if (parameterString.Length > 0)
+                        {
+                            Stack<string> parameters = new Stack<string>();
+                            string paramname = "";
+                            int i;
+                            bool spacePermitted = true;
+                            for (i = 0; i < parameterString.Length; i++)
+                            {
+                                char currentchar = parameterString[i];
+                                if (currentchar == ',')
+                                {
+                                    if (paramname.Length == 0)
+                                        throw new Exception("Cannot have an empty paramater name");
+                                    parameters.Push(paramname);
+                                    spacePermitted = true;
+                                }
+                                else if (currentchar == ' ' && spacePermitted) { }
+                                else if (currentchar == ' ' && !spacePermitted)
+                                {
+                                    throw new Exception("Canot have a space inside a paramter name");
+                                }
+                                else
+                                {
+                                    if (spacePermitted)
+                                        spacePermitted = false;
+                                    paramname = paramname + currentchar;
+                                }
+                            }
+                            parameters.Push(paramname);
+                            if (i != parameterString.Length)
+                                throw new Exception("List of parameters is invalid");
+                            methodStartLine = lineno;
+                            methodName = name;
+                            methodParameters = parameters.ToArray();
+                            methodInProgress = true;
+                            processLine = false;
+                        }
+                        else
+                        {
+                            methodStartLine = lineno;
+                            methodName = name;
+                            methodParameters = new string[] { };
+                            methodInProgress = true;
+                            processLine = false;
+                        }
+                        break;
+                    case "endmethod":
+                        context.removeLastScope();
                         break;
                     case "pen":
                         // if the command is to change the pen width and has the correct number of operands
@@ -173,7 +328,7 @@ namespace ASE_Assignment
                             }
                             else
                             {
-                                throw new Exception("Invalid command");
+                                throw new Exception("Invalid operand for command circle");
                             }
                         }
                         else
@@ -356,7 +511,7 @@ namespace ASE_Assignment
                         }
                         break;
                     default:
-                        if (words[1] == "=")
+                        if (words.Length > 2 && words[1] == "=")
                         {
                             if (words.Length < 3)
                             {
@@ -368,7 +523,7 @@ namespace ASE_Assignment
                         }
                         else
                         {
-                            throw new Exception();
+                            throw new Exception("Invalid operation");
                         }
                         break;
                 }
@@ -379,6 +534,17 @@ namespace ASE_Assignment
                 {
                     case "endwhile":
                         context.removeWhile();
+                        processLine = true;
+                        break;
+                    case "endif":
+                        context.removeIf();
+                        processLine = true;
+                        break;
+                    case "endmethod":
+                        if (!methodInProgress)
+                            throw new Exception();
+                        methodInProgress = false;
+                        context.AddMethod(methodName, methodStartLine, lineno, methodParameters);
                         processLine = true;
                         break;
                     default:
@@ -420,22 +586,22 @@ namespace ASE_Assignment
         public void executeScript(string script)
         {
             string[] commandArray = script.Split('\n');
-            for (int i = 0; i < commandArray.Length; i++)
+            for (lineNumber = 0; lineNumber < commandArray.Length; lineNumber++)
             {
+                    executeLine(commandArray[lineNumber], lineNumber);
                 try
                 {
-                    executeLine(commandArray[i], i);
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(String.Format("On line {0}: {1}", i, e.Message));
+                    MessageBox.Show(String.Format("On line {0}: {1}", lineNumber, e.Message));
                     break;
                 }
                 if (lineUpdate)
                 {
                     try
                     {
-                        i = context.lastWhile.headLineNo - 1;
+                        lineNumber = context.lastWhile.headLineNo - 1;
                     }
                     catch (Exception e)
                     {
