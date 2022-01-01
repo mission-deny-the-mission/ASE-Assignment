@@ -409,15 +409,13 @@ namespace ASE_Assignment
                             break;
                     }
                 }
-                else
+                else if (words[0].ToLower() == "endmethod")
                 {
-                    if (words[0].ToLower() == "endmethod")
-                    {
-                        methodInProgress = false;
-                        context.AddMethod(methodName, methodStartLine, lineno, methodParameters);
-                        processLine = true;
-                    }
+                    methodInProgress = false;
+                    context.AddMethod(methodName, methodStartLine, lineno, methodParameters);
+                    processLine = true;
                 }
+                
             }
         }
 

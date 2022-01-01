@@ -8,14 +8,34 @@ using System.Drawing;
 
 namespace ASE_Assignment_Unit_Tests
 {
-    class DebugDrawingClass : DrawingClass
+    class DebugDrawingClass : Drawer
     {
-        public DebugDrawingClass(System.Windows.Forms.PictureBox pb) : base(pb)
-        {}
+        protected List<Shape> shapes;
+        protected Graphics graphics;
 
-        public List<Shape> GetShapes()
+        public DebugDrawingClass(Graphics graphics)
         {
-            return shapes;
+            this.graphics = graphics;
+            shapes = new List<Shape>();
+        }
+
+        public void clear()
+        {
+            shapes.Clear();
+        }
+
+
+        public void update()
+        {
+            foreach (Shape shape in shapes)
+            {
+                shape.Paint(graphics);
+            }
+        }
+
+        public void addShape(Shape shape)
+        {
+            shapes.Add(shape);
         }
     }
 }

@@ -3,79 +3,82 @@ using ASE_Assignment;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
+using System;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace ASE_Assignment_Unit_Tests
 {
     [TestClass]
     public class CommandParserValidTests
     {
-        public void CompareTwoShapes(Shape shape1, Shape shape2)
+        public static bool CompareBitmapsFast(System.Drawing.Bitmap bmp1, System.Drawing.Bitmap bmp2)
         {
-            Assert.AreEqual(shape1.GetColor(), shape2.GetColor());
-            Assert.AreEqual(shape1.GetPenWidth(), shape2.GetPenWidth());
-            Assert.AreEqual(shape1.GetType(), shape1.GetType());
+            if (bmp1 == null || bmp2 == null)
+                return false;
+            if (object.Equals(bmp1, bmp2))
+                return true;
+            if (!bmp1.Size.Equals(bmp2.Size) || !bmp1.PixelFormat.Equals(bmp2.PixelFormat))
+                return false;
 
-            if (shape1.GetType() == typeof(Line))
+            int bytes = bmp1.Width * bmp1.Height * (System.Drawing.Image.GetPixelFormatSize(bmp1.PixelFormat) / 8);
+
+            bool result = true;
+            byte[] b1bytes = new byte[bytes];
+            byte[] b2bytes = new byte[bytes];
+
+            System.Drawing.Imaging.BitmapData bitmapData1 = bmp1.LockBits(new System.Drawing.Rectangle(0, 0, bmp1.Width, bmp1.Height), ImageLockMode.ReadOnly, bmp1.PixelFormat);
+            System.Drawing.Imaging.BitmapData bitmapData2 = bmp2.LockBits(new System.Drawing.Rectangle(0, 0, bmp2.Width, bmp2.Height), ImageLockMode.ReadOnly, bmp2.PixelFormat);
+
+            System.Runtime.InteropServices.Marshal.Copy(bitmapData1.Scan0, b1bytes, 0, bytes);
+            System.Runtime.InteropServices.Marshal.Copy(bitmapData2.Scan0, b2bytes, 0, bytes);
+
+            for (int n = 0; n <= bytes - 1; n++)
             {
-                Line line1 = (Line)shape1;
-                Line line2 = (Line)shape2;
-                Assert.AreEqual(line1.GetPoints(), line2.GetPoints());
+                if (b1bytes[n] != b2bytes[n])
+                {
+                    result = false;
+                    break;
+                }
             }
-            else if (shape1.GetType() == typeof(Circle))
-            {
-                Circle circle1 = (Circle)shape1;
-                Circle circle2 = (Circle)shape2;
-                Assert.AreEqual(circle1.GetPosition(), circle2.GetPosition());
-                Assert.AreEqual(circle1.GetRadius(), circle2.GetRadius());
-            }
-            else if (shape1.GetType().IsSubclassOf(typeof(Polygon)))
-            {
-                Polygon polygon1 = (Triangle)shape1;
-                Polygon polygon2 = (Triangle)shape2;
-                Assert.IsTrue(Enumerable.SequenceEqual(polygon1.GetPoints(), polygon2.GetPoints()));
-            }
-            else if (shape1.GetType() == typeof(Rectangle))
-            {
-                Rectangle rect1 = (Rectangle)shape1;
-                Rectangle rect2 = (Rectangle)shape2;
-                Assert.AreEqual(rect1.GetPosition(), rect2.GetPosition());
-                Assert.AreEqual(rect1.GetWidth(), rect2.GetWidth());
-                Assert.AreEqual(rect1.GetHeight(), rect2.GetHeight());
-            }
+
+            bmp1.UnlockBits(bitmapData1);
+            bmp2.UnlockBits(bitmapData2);
+
+            return result;
         }
 
-        public void CompareListOfShapes(List<Shape> shapes1, List<Shape> shapes2)
+        protected void testHelper(Action<CommandParser> test, Action<System.Drawing.Graphics, System.Drawing.Pen> control)
         {
-            Assert.AreEqual(shapes1.Count, shapes2.Count);
-            for (int i = 0; i < shapes1.Count; i++)
-            {
-                CompareTwoShapes(shapes1[i], shapes2[i]);
-            }
-        }
+            Bitmap bitmap1 = new Bitmap(640, 480);
+            Bitmap bitmap2 = new Bitmap(640, 480);
 
-        public void CompareListOfShapes(List<Shape> shapes1, List<Shape> shapes2, int length)
-        {
-            Assert.AreEqual(shapes1.Count, length);
-            CompareListOfShapes(shapes1, shapes2);
+            Graphics graphics1 = Graphics.FromImage(bitmap1);
+            Graphics graphics2 = Graphics.FromImage(bitmap2);
+
+            DebugDrawingClass drawingClass = new DebugDrawingClass(graphics1);
+            CommandParser commandParser = new CommandParser(drawingClass);
+
+            Pen pen = new Pen(Color.Black, 2);
+
+            test(commandParser);
+            control(graphics2, pen);
+            drawingClass.update();
+
+            Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
 
         [TestMethod]
         public void ParserClassTest1()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-
-            CommandParser commandParser = new CommandParser(class1);
-
-            commandParser.executeLine("DrawTo 100,100");
-            class2.drawTo(100, 100);
-
-            List<Shape> shapes1 = class1.GetShapes();
-            List<Shape> shapes2 = class2.GetShapes();
-
-            CompareListOfShapes(shapes1, shapes2, 1);
+            testHelper(
+                parser => { parser.executeLine("DrawTo 100,100"); },
+                (graphics, pen) => {
+                    graphics.DrawLine(pen, 0, 0, 100, 100);
+                });
         }
 
+        /*
         [TestMethod]
         public void ParserClassTest2()
         {
@@ -228,5 +231,6 @@ namespace ASE_Assignment_Unit_Tests
 
             CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 3);
         }
+        */
     }
 }

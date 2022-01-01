@@ -13,7 +13,7 @@ namespace ASE_Assignment_Unit_Tests
     {
         public void TestCommand(string command)
         {
-            DebugDrawingClass drawingClass = new DebugDrawingClass(new PictureBox());
+            DrawingClass drawingClass = new DrawingClass(new PictureBox());
             CommandParser parser = new CommandParser(drawingClass);
 
             parser.executeLine(command);
