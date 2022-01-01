@@ -64,9 +64,6 @@ namespace ASE_Assignment_Unit_Tests
             test(commandParser);
             control(graphics2, pen);
 
-            bitmap1.Save("C:\\Users\\Harry Hall\\test.bmp");
-            bitmap2.Save("C:\\Users\\Harry Hall\\control.bmp");
-
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
 
