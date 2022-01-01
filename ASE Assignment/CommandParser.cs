@@ -172,7 +172,6 @@ namespace ASE_Assignment
                     case "endif":
                         if (words.Length > 1)
                             throw new Exception("endif does not need any operands.");
-                        context.removeIf();
                         break;
                     case "call":
                         if (line.Length < 8)
@@ -188,7 +187,7 @@ namespace ASE_Assignment
                             {
                                 values[i] = expressionHandler.EvaluateValue(parameters[i]);
                             }
-                            lineNumber = context.InstantiateMethod(nameToCall, values);
+                            lineNumber = context.InstantiateMethod(nameToCall, lineno, values);
                         }
                         break;
                     case "method":
@@ -252,7 +251,7 @@ namespace ASE_Assignment
                         }
                         break;
                     case "endmethod":
-                        context.removeLastScope();
+                        lineNumber = context.ExitMethod();
                         break;
                     case "pen":
                         // if the command is to change the pen width and has the correct number of operands
@@ -530,25 +529,33 @@ namespace ASE_Assignment
             }
             else
             {
-                switch (words[0].ToLower())
+                if (!methodInProgress)
                 {
-                    case "endwhile":
-                        context.removeWhile();
-                        processLine = true;
-                        break;
-                    case "endif":
-                        context.removeIf();
-                        processLine = true;
-                        break;
-                    case "endmethod":
-                        if (!methodInProgress)
+                    switch (words[0].ToLower())
+                    {
+                        case "endwhile":
+                            context.removeWhile();
+                            processLine = true;
+                            break;
+                        case "endif":
+                            context.removeIf();
+                            processLine = true;
+                            break;
+                        case "endmethod":
                             throw new Exception();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (words[0].ToLower() == "endmethod")
+                    {
                         methodInProgress = false;
                         context.AddMethod(methodName, methodStartLine, lineno, methodParameters);
                         processLine = true;
-                        break;
-                    default:
-                        break;
+                    }
                 }
             }
         }
@@ -588,9 +595,9 @@ namespace ASE_Assignment
             string[] commandArray = script.Split('\n');
             for (lineNumber = 0; lineNumber < commandArray.Length; lineNumber++)
             {
-                    executeLine(commandArray[lineNumber], lineNumber);
                 try
                 {
+                    executeLine(commandArray[lineNumber], lineNumber);
                 }
                 catch (Exception e)
                 {

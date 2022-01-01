@@ -97,6 +97,10 @@ namespace ASE_Assignment
         {
             get => beginningLineNo;
         }
+        public int endLine
+        {
+            get => endLineNo;
+        }
     }
 
     class Context
@@ -105,12 +109,14 @@ namespace ASE_Assignment
         Stack<WhileLoop> whileLoops;
         Stack<IfStatement> ifStatements;
         Dictionary<string, Method> methods;
+        Stack<int> returnPoints;
         public Context()
         {
             innerScopes = new Stack<Scope>();
             whileLoops = new Stack<WhileLoop>();
             ifStatements = new Stack<IfStatement>();
             methods = new Dictionary<string, Method>();
+            returnPoints = new Stack<int>();
             innerScopes.Push(new Scope());
         }
         public Stack<Scope> scopes
@@ -176,17 +182,21 @@ namespace ASE_Assignment
             Method method = new Method(start, end, parameters);
             methods.Add(name, method);
         }
-        public int InstantiateMethod(string name, int[] values)
+        public int InstantiateMethod(string name, int returnLine, int[] values)
         {
             if (!methods.ContainsKey(name))
                 throw new Exception("A method with that name could not be found");
             Method method = methods[name];
             innerScopes.Push(method.CreateScope(values));
+            returnPoints.Push(returnLine);
             return method.startLine;
         }
-        public void removeLastScope()
+        public int ExitMethod()
         {
+            if (returnPoints.Count == 0)
+                throw new Exception("Not in a method");
             innerScopes.Pop();
+            return returnPoints.Pop();
         }
     }
 }

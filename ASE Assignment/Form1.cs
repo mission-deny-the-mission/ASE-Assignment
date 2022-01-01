@@ -48,14 +48,32 @@ namespace ASE_Assignment
 
         private void execute(object sender, EventArgs e)
         {
-            parser.executeLineHandler(commandArea.Text, scriptArea.Text);
+            if (commandArea.Text.ToLower() == "reset")
+            {
+                drawer.clear();
+                parser = new CommandParser(drawer);
+                drawer.update();
+            }
+            else
+            {
+                parser.executeLineHandler(commandArea.Text, scriptArea.Text);
+            }
         }
 
         private void input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
             {
-                parser.executeLineHandler(commandArea.Text, scriptArea.Text);
+                if (commandArea.Text.ToLower() == "reset")
+                {
+                    drawer.clear();
+                    parser = new CommandParser(drawer);
+                    drawer.update();
+                }
+                else
+                {
+                    parser.executeLineHandler(commandArea.Text, scriptArea.Text);
+                }
             }
         }
 
