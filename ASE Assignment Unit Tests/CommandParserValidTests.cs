@@ -27,8 +27,8 @@ namespace ASE_Assignment_Unit_Tests
             byte[] b1bytes = new byte[bytes];
             byte[] b2bytes = new byte[bytes];
 
-            System.Drawing.Imaging.BitmapData bitmapData1 = bmp1.LockBits(new System.Drawing.Rectangle(0, 0, bmp1.Width, bmp1.Height), ImageLockMode.ReadOnly, bmp1.PixelFormat);
-            System.Drawing.Imaging.BitmapData bitmapData2 = bmp2.LockBits(new System.Drawing.Rectangle(0, 0, bmp2.Width, bmp2.Height), ImageLockMode.ReadOnly, bmp2.PixelFormat);
+            BitmapData bitmapData1 = bmp1.LockBits(new System.Drawing.Rectangle(0, 0, bmp1.Width, bmp1.Height), ImageLockMode.ReadOnly, bmp1.PixelFormat);
+            BitmapData bitmapData2 = bmp2.LockBits(new System.Drawing.Rectangle(0, 0, bmp2.Width, bmp2.Height), ImageLockMode.ReadOnly, bmp2.PixelFormat);
 
             System.Runtime.InteropServices.Marshal.Copy(bitmapData1.Scan0, b1bytes, 0, bytes);
             System.Runtime.InteropServices.Marshal.Copy(bitmapData2.Scan0, b2bytes, 0, bytes);
@@ -170,66 +170,66 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
-        /*
         [TestMethod]
         public void MoveToTest()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            parser.executeLine("moveto 100,100");
-            parser.executeLine("circle 80");
-
-            class2.setPosition(100, 100);
-            class2.drawCircle(80);
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+            void test(CommandParser parser)
+            {
+                parser.executeLine("moveto 100,100");
+                parser.executeLineHandler("circle 80", "");
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                graphics.DrawEllipse(pen, 100 - 80, 100 - 80, 160, 160);
+            }
+            testHelper(test, control);
         }
 
         [TestMethod]
         public void ClearTest()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
+            void test(CommandParser parser)
+            {
+                parser.executeLine("moveto 200,200");
+                parser.executeLine("pen 200 200 200 200");
+                parser.executeLine("fill on");
+                parser.executeLine("circle 40");
+                parser.executeLine("clear");
 
-            parser.executeLine("moveto 200,200");
-            parser.executeLine("pen 200 200 200 200");
-            parser.executeLine("fill on");
-            parser.executeLine("circle 40");
-            parser.executeLine("clear");
-
-            parser.executeLine("rectangle 100 100");
-
-            class2.drawRectangle(100, 100);
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+                parser.executeLineHandler("rectangle 100 100", "");
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                Brush brush = new SolidBrush(Color.FromArgb(200, 200, 200, 200));
+                graphics.FillRectangle(brush, 200, 200, 100, 100);
+            }
+            testHelper(test, control);
         }
 
         [TestMethod]
         public void PenColourTest()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            parser.executeLine("pen 128 128 0 255");
-            parser.executeLine("circle 50");
-            parser.executeLine("pen 0 0 0");
-            parser.executeLine("rectangle 100,100 80 80");
-            parser.executeLine("pen red");
-            parser.executeLine("triangle 200,200 300,200 200,300");
-
-            class2.setPenColour((128, 128, 0, 255));
-            class2.drawCircle(50);
-            class2.setPenColour((0, 0, 0, 255));
-            class2.drawRectangle(100, 100, 80, 80);
-            class2.setPenColour((255, 0, 0, 255));
-            class2.drawTriangle((200, 200), (300, 200), (200, 300));
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 3);
+            void test(CommandParser parser)
+            {
+                parser.executeLine("pen 128 128 0 255");
+                parser.executeLine("circle 50");
+                parser.executeLine("pen 0 0 0");
+                parser.executeLine("rectangle 100,100 80 80");
+                parser.executeLine("pen red");
+                parser.executeLineHandler("triangle 200,200 300,200 200,300", "");
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                pen.Color = Color.FromArgb(255, 128, 128, 0);
+                graphics.DrawEllipse(pen, -50, -50, 100, 100);
+                pen.Color = Color.Black;
+                graphics.DrawRectangle(pen, 100, 100, 80, 80);
+                pen.Color = Color.Red;
+                Point[] points =
+                    new Point[] { new Point(200, 200), new Point(300, 200), new Point(200, 300) };
+                graphics.DrawPolygon(pen, points);
+            }
+            testHelper(test, control);
         }
-        */
     }
 }
