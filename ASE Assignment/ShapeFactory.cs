@@ -13,12 +13,10 @@ namespace ASE_Assignment
         public bool fillState;
 
         ExpressionHandler expressionHandler;
-        Context context;
 
-        public ShapeFactory(Context context)
+        public ShapeFactory(ExpressionHandler expressionHandler)
         {
-            this.context = context;
-            expressionHandler = new ExpressionHandler(context);
+            this.expressionHandler = expressionHandler;
 
             Clear();
         }

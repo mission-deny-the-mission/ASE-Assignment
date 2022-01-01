@@ -15,7 +15,6 @@ namespace ASE_Assignment
         ExpressionHandler expressionHandler;
         ShapeFactory shapeFactory;
 
-        bool lineUpdate;
         bool processLine;
 
         int methodStartLine;
@@ -36,7 +35,7 @@ namespace ASE_Assignment
             context = new Context();
             expressionHandler = new ExpressionHandler(context);
             processLine = true;
-            shapeFactory = new ShapeFactory(context);
+            shapeFactory = new ShapeFactory(expressionHandler);
         }
 
         // function to decode a colour entered by the user into a series of bytes representing the different colour channels
@@ -131,8 +130,6 @@ namespace ASE_Assignment
         // function to execute a command enterd by the user contained within a string
         public void executeLine(string line, int lineno)
         {
-            lineUpdate = false;
-
             // remove the new line character at the end of the string if it's present
             line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             // if the line is empty return and do nothing
@@ -165,7 +162,7 @@ namespace ASE_Assignment
                         }
                         break;
                     case "endwhile":
-                        lineUpdate = true;
+                        lineNumber = context.lastWhile.headLineNo - 1;
                         break;
                     case "if":
                         if (words.Length > 1)
@@ -467,17 +464,6 @@ namespace ASE_Assignment
                 {
                     MessageBox.Show(String.Format("On line {0}: {1}", lineNumber, e.Message));
                     break;
-                }
-                if (lineUpdate)
-                {
-                    try
-                    {
-                        lineNumber = context.lastWhile.headLineNo - 1;
-                    }
-                    catch (Exception e)
-                    {
-                        // not sure yet
-                    }
                 }
             }
             drawingClass.update();
