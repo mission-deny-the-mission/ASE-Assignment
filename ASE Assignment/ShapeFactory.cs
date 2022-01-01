@@ -9,8 +9,20 @@ namespace ASE_Assignment
     {
         public int x, y;
         protected Color color;
-        public float penWidth;
+        protected float penWidth;
         public bool fillState;
+
+        public float accessPenWidth
+        {
+            get { return penWidth; }
+            set
+            {
+                if (value > 0)
+                    penWidth = value;
+                else
+                    throw new ArgumentOutOfRangeException("Width is negative");
+            }
+        }
 
         ExpressionHandler expressionHandler;
 
@@ -23,6 +35,7 @@ namespace ASE_Assignment
 
         public void Clear()
         {
+            fillState = false;
             x = 0;
             y = 0;
             color = Color.Black;

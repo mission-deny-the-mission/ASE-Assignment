@@ -216,7 +216,7 @@ namespace ASE_Assignment
                             // otherwise trigger an exception detailing the syntax error in the command
                             if (float.TryParse(words[2], out float width))
                             {
-                                shapeFactory.penWidth = width;
+                                shapeFactory.accessPenWidth = width;
                             }
                             else
                             {

@@ -12,7 +12,7 @@ namespace ASE_Assignment_Unit_Tests
     [TestClass]
     public class CommandParserValidTests
     {
-        public static bool CompareBitmapsFast(System.Drawing.Bitmap bmp1, System.Drawing.Bitmap bmp2)
+        public static bool CompareBitmapsFast(Bitmap bmp1, Bitmap bmp2)
         {
             if (bmp1 == null || bmp2 == null)
                 return false;
@@ -63,7 +63,9 @@ namespace ASE_Assignment_Unit_Tests
 
             test(commandParser);
             control(graphics2, pen);
-            drawingClass.update();
+
+            bitmap1.Save("C:\\Users\\Harry Hall\\test.bmp");
+            bitmap2.Save("C:\\Users\\Harry Hall\\control.bmp");
 
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
@@ -72,106 +74,103 @@ namespace ASE_Assignment_Unit_Tests
         public void ParserClassTest1()
         {
             testHelper(
-                parser => { parser.executeLine("DrawTo 100,100"); },
+                parser => { parser.executeLineHandler("DrawTo 100,100", ""); },
                 (graphics, pen) => {
                     graphics.DrawLine(pen, 0, 0, 100, 100);
                 });
         }
 
-        /*
         [TestMethod]
         public void ParserClassTest2()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            string script = "pen red\n" +
-                "fill off\n" +
-                "Position pen 100,100\n" +
-                "DrawTo 200,100\n" +
-                "fill on\n" +
-                "Position pen 200,200\n" +
-                "new colour teal 0 128 128\n" +
-                "pen teal\n" +
-                "circle 80\n" +
-                "Position pen 200,290\n" +
-                "new colour halfred 255 0 0 128\n" +
-                "pen halfred\n" +
-                "circle 80\n";
-            parser.executeScript(script);
-
-            class2.setPenColour((255, 0, 0, 255));
-            class2.setFillState(false);
-            class2.setPosition(100, 100);
-            class2.drawTo(200, 100);
-            class2.setFillState(true);
-            class2.setPosition(200, 200);
-            class2.setPenColour((0, 128, 128, 255));
-            class2.drawCircle(80);
-            class2.setPosition(200, 290);
-            class2.setPenColour((255, 0, 0, 128));
-            class2.drawCircle(80);
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 3);
+            void test(CommandParser parser)
+            {
+                string script = "pen red\n" +
+                    "fill off\n" +
+                    "Position pen 100,100\n" +
+                    "DrawTo 200,100\n" +
+                    "fill on\n" +
+                    "Position pen 200,200\n" +
+                    "new colour teal 0 255 255\n" +
+                    "pen teal\n" +
+                    "circle 80\n" +
+                    "Position pen 200,290\n" +
+                    "new colour halfred 255 0 0 128\n" +
+                    "pen halfred\n" +
+                    "circle 80\n";
+                parser.executeScript(script);
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                pen.Color = Color.FromArgb(255, 255, 0, 0);
+                graphics.DrawLine(pen, 100, 100, 200, 100);
+                Brush brush = new SolidBrush(Color.FromArgb(255, 0, 255, 255));
+                int x = 200, y = 200, radius = 80;
+                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(x - radius, y - radius, radius * 2, radius * 2);
+                graphics.FillEllipse(brush, rect);
+                brush = new SolidBrush(Color.FromArgb(128, 255, 0, 0));
+                y = 290;
+                rect = new System.Drawing.Rectangle(x - radius, y - radius, radius * 2, radius * 2);
+                graphics.FillEllipse(brush, rect);
+            }
+            testHelper(test, control);
         }
+
 
         [TestMethod]
         public void TriangleTest1()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            parser.executeLine("Triangle 100,100 100,200 200,100");
-            class2.drawTriangle((100, 100), (100, 200), (200, 100));
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 1);
+            testHelper(
+                (parser) => { parser.executeLineHandler("Triangle 100,100 100,200 200,100", ""); },
+                (graphics, pen) => {
+                    Point[] points =
+                        new Point[] { new Point(100, 100), new Point(100, 200), new Point(200, 100) };
+                    graphics.DrawPolygon(pen, points);
+                });
         }
 
         [TestMethod]
         public void RectangleTest1()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            string script = "position pen 50,50\n"
-                + "rectangle 50 50\n"
-                + "fill on\n"
-                + "pen blue\n"
-                + "rectangle 200,200 100 50";
-            parser.executeScript(script);
-
-            class2.setPosition(50, 50);
-            class2.drawRectangle(50, 50);
-            class2.setFillState(true);
-            class2.setPenColour((0, 0, 255, 255));
-            class2.drawRectangle(200, 200, 100, 50);
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
+            void test(CommandParser parser)
+            {
+                string script = "position pen 50,50\n"
+                    + "rectangle 50 50\n"
+                    + "fill on\n"
+                    + "pen blue\n"
+                    + "rectangle 200,200 100 50";
+                parser.executeScript(script);
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                graphics.DrawRectangle(pen, 50, 50, 50, 50);
+                Brush brush = new SolidBrush(Color.Blue);
+                graphics.FillRectangle(brush, 200, 200, 100, 50);
+            }
+            testHelper(test, control);
         }
 
         [TestMethod]
         public void WidthTest()
         {
-            DebugDrawingClass class1 = new DebugDrawingClass(new PictureBox());
-            DebugDrawingClass class2 = new DebugDrawingClass(new PictureBox());
-            CommandParser parser = new CommandParser(class1);
-
-            parser.executeLine("pen width 6.1");
-            parser.executeLine("drawto 200,200");
-            parser.executeLine("pen width 1");
-            parser.executeLine("drawto 300,200");
-
-            class2.setPenWidth(6.1f);
-            class2.drawTo(200, 200);
-            class2.setPenWidth(1f);
-            class2.drawTo(300, 200);
-
-            CompareListOfShapes(class1.GetShapes(), class2.GetShapes(), 2);
+            void test(CommandParser parser)
+            {
+                parser.executeLine("pen width 6.1");
+                parser.executeLine("drawto 200,200");
+                parser.executeLine("pen width 1");
+                parser.executeLineHandler("drawto 300,200", "");
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                pen.Width = 6.1f;
+                graphics.DrawLine(pen, 0, 0, 200, 200);
+                pen.Width = 1f;
+                graphics.DrawLine(pen, 200, 200, 300, 200);
+            }
+            testHelper(test, control);
         }
 
+        /*
         [TestMethod]
         public void MoveToTest()
         {
