@@ -1,0 +1,8 @@
+method drawcircle(a)
+	pen red
+	circle a
+	pen black
+endmethod
+call drawcircle(100)
+moveto 200,200
+rectangle 50 50

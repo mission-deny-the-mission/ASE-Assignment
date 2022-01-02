@@ -1,0 +1,11 @@
+clear
+i = 1
+while i < 4
+	j = 1
+	while j < 3
+		temp = i * j * 40
+		circle temp
+		j = j + 1
+	endwhile
+	i = i + 1
+endwhile

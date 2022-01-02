@@ -1,0 +1,6 @@
+count = 3
+while count > 0
+	temp = count * 50
+	circle temp
+	count = count - 1
+endwhile

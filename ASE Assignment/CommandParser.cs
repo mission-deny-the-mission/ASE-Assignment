@@ -162,7 +162,11 @@ namespace ASE_Assignment
                         }
                         break;
                     case "endwhile":
-                        lineNumber = context.lastWhile.headLineNo - 1;
+                        try
+                        {
+                            lineNumber = context.lastWhile.headLineNo - 1;
+                        }
+                        catch (Exception ex) { }
                         break;
                     case "if":
                         if (words.Length > 1)
@@ -447,9 +451,9 @@ namespace ASE_Assignment
             string[] commandArray = script.Split('\n');
             for (lineNumber = 0; lineNumber < commandArray.Length; lineNumber++)
             {
+                    executeLine(commandArray[lineNumber], lineNumber);
                 try
                 {
-                    executeLine(commandArray[lineNumber], lineNumber);
                 }
                 catch (Exception e)
                 {

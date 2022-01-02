@@ -1,0 +1,13 @@
+method drawcircle(a)
+	pen red
+	circle a
+	pen black
+	if a > 20
+		b = a - 20
+		call drawcircle(b)
+	endif
+endmethod
+moveto 100,100
+call drawcircle(100)
+moveto 200,200
+rectangle 50 50

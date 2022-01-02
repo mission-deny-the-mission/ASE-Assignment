@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.IO;
 
 namespace ASE_Assignment_Unit_Tests
 {
@@ -64,7 +65,29 @@ namespace ASE_Assignment_Unit_Tests
             test(commandParser);
             control(graphics2, pen);
 
+            //bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
+            //bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
+
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
+        }
+
+        protected void drawCircle(Graphics graphics, Pen pen, int x, int y, int radius)
+        {
+            graphics.DrawEllipse(pen, x - radius, y - radius, radius * 2, radius * 2);
+        }
+        protected void drawCircle(Graphics graphics, Pen pen, int radius)
+        {
+            int x = 0, y = 0;
+            graphics.DrawEllipse(pen, x - radius, y - radius, radius * 2, radius * 2);
+        }
+        protected void fillCircle(Graphics graphics, Brush brush, int x, int y, int radius)
+        {
+            graphics.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
+        }
+        protected void fillCircle(Graphics graphics, Brush brush, int radius)
+        {
+            int x = 0, y = 0;
+            graphics.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
         }
 
         [TestMethod]
@@ -103,12 +126,10 @@ namespace ASE_Assignment_Unit_Tests
                 graphics.DrawLine(pen, 100, 100, 200, 100);
                 Brush brush = new SolidBrush(Color.FromArgb(255, 0, 255, 255));
                 int x = 200, y = 200, radius = 80;
-                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(x - radius, y - radius, radius * 2, radius * 2);
-                graphics.FillEllipse(brush, rect);
+                fillCircle(graphics, brush, x, y, radius);
                 brush = new SolidBrush(Color.FromArgb(128, 255, 0, 0));
                 y = 290;
-                rect = new System.Drawing.Rectangle(x - radius, y - radius, radius * 2, radius * 2);
-                graphics.FillEllipse(brush, rect);
+                fillCircle(graphics, brush, x, y, radius);
             }
             testHelper(test, control);
         }
@@ -177,7 +198,7 @@ namespace ASE_Assignment_Unit_Tests
             }
             void control(Graphics graphics, Pen pen)
             {
-                graphics.DrawEllipse(pen, 100 - 80, 100 - 80, 160, 160);
+                drawCircle(graphics, pen, 100, 100, 80);
             }
             testHelper(test, control);
         }
@@ -225,6 +246,93 @@ namespace ASE_Assignment_Unit_Tests
                 Point[] points =
                     new Point[] { new Point(200, 200), new Point(300, 200), new Point(200, 300) };
                 graphics.DrawPolygon(pen, points);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void MethodTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\method.txt"))
+                {
+                    string script = methodFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                Pen pen2 = new Pen(Color.Red, 2);
+                drawCircle(graphics, pen2, 100);
+                graphics.DrawRectangle(pen, 200, 200, 50, 50);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void RecursiveMethodTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\recursion.txt"))
+                {
+                    string script = methodFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                pen.Color = Color.Red;
+                for (int radius = 100; radius > 0; radius -= 20)
+                {
+                    drawCircle(graphics, pen, 100, 100, radius);
+                }
+                pen.Color = Color.Black;
+                graphics.DrawRectangle(pen, 200, 200, 50, 50);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void WhileLoopTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\while loop.txt"))
+                {
+                    string script = methodFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                drawCircle(graphics, pen, 50);
+                drawCircle(graphics, pen, 100);
+                drawCircle(graphics, pen, 150);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void NestedWhileLoopTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\nested while loop.txt"))
+                {
+                    string script = methodFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                drawCircle(graphics, pen, 40);
+                drawCircle(graphics, pen, 80);
+                drawCircle(graphics, pen, 40);
+                drawCircle(graphics, pen, 160);
+                drawCircle(graphics, pen, 120);
+                drawCircle(graphics, pen, 240);
             }
             testHelper(test, control);
         }
