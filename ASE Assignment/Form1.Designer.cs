@@ -58,6 +58,8 @@ namespace ASE_Assignment
             this.scriptArea.Name = "scriptArea";
             this.scriptArea.Size = new System.Drawing.Size(282, 131);
             this.scriptArea.TabIndex = 1;
+            this.scriptArea.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.scriptArea.AcceptsTab = true;
             // 
             // executeScriptButton
             // 

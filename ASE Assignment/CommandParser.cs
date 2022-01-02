@@ -131,7 +131,7 @@ namespace ASE_Assignment
         public void executeLine(string line, int lineno)
         {
             // remove the new line character at the end of the string if it's present
-            line = line.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+            line = line.Trim();
             // if the line is empty return and do nothing
             if (line == "")
             {

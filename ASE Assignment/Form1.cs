@@ -60,6 +60,17 @@ namespace ASE_Assignment
             }
         }
 
+        /*
+        private void ScriptArea_KeyPress(object sender, KeyEventArgs e, SendKeys sendKeys)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+                e.Handled = true;
+                sendKeys(^{TAB});
+            }
+        }
+        */
+
         private void input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
