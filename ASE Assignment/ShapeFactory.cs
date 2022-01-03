@@ -5,6 +5,13 @@ using System.Text;
 
 namespace ASE_Assignment
 {
+    /// <summary>
+    /// This is a class that can create Shape objects called a Factory.
+    /// It retains certain state such as the current x and y position
+    /// the current colour, and the width of the pen.
+    /// It can also deal with some select flashing colours.
+    /// It's responsible for parsing certain commands as well now.
+    /// </summary>
     class ShapeFactory
     {
         public int x, y;
@@ -14,6 +21,10 @@ namespace ASE_Assignment
         protected bool flashingColor;
         protected Color secondColor;
 
+        // this  is important for processing expressions such as variables and equations
+        protected ExpressionHandler expressionHandler;
+
+        // a public method of getting the pen width
         public float accessPenWidth
         {
             get { return penWidth; }
@@ -26,8 +37,10 @@ namespace ASE_Assignment
             }
         }
 
-        ExpressionHandler expressionHandler;
-
+        /// <summary>
+        /// Constructor of the shape factory
+        /// </summary>
+        /// <param name="expressionHandler">the expression handler to use that is also shared with the CommandParser</param>
         public ShapeFactory(ExpressionHandler expressionHandler)
         {
             this.expressionHandler = expressionHandler;
@@ -35,6 +48,9 @@ namespace ASE_Assignment
             Clear();
         }
 
+        /// <summary>
+        /// Method to reset the factories states to the default. This is called by the constructor.
+        /// </summary>
         public void Clear()
         {
             fillState = false;
@@ -44,6 +60,12 @@ namespace ASE_Assignment
             penWidth = 2;
         }
 
+        /// <summary>
+        /// Method to parse a set of coordinates.
+        /// </summary>
+        /// <param name="point">The points to parse seperated by a comma</param>
+        /// <returns>The point after it has been parsed</returns>
+        /// <exception cref="Exception">Triggered if the point is invalid and can't be parsed</exception>
         public (int, int) parsePoint(string point)
         {
             string[] points = point.Split(',');
@@ -61,6 +83,10 @@ namespace ASE_Assignment
             }
         }
 
+        /// <summary>
+        /// Public methods to get and set the colour as a byte.
+        /// The methods here convert back and forth from a tuple of four bytes to a Color object
+        /// </summary>
         public (byte, byte, byte, byte) byteColour
         {
             get
@@ -74,7 +100,14 @@ namespace ASE_Assignment
             }
         }
 
-        protected Shape parseCircle(string command, string[] words)
+        /// <summary>
+        /// This is an internal method to help with parsing a circle and creating an object from it
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        protected Circle parseCircle(string command, string[] words)
         {
             // circle command. should take either 3 or 2 arguments
             // three arguments includes the postition to draw the circle in and the radius
@@ -118,7 +151,14 @@ namespace ASE_Assignment
             }
         }
 
-        protected Shape parseTriangle(string command, string[] words)
+        /// <summary>
+        /// Method for parsing and creating a Triangle
+        /// </summary>
+        /// <param name="command">command to parse</param>
+        /// <param name="words">the same command broken into words</param>
+        /// <returns>the triangle that has been created</returns>
+        /// <exception cref="Exception">Thrown if the triangle command in question is invalid</exception>
+        protected Triangle parseTriangle(string command, string[] words)
         {
             // triangles have three points so needs three arguments
             if (words.Length == 4)
@@ -141,6 +181,13 @@ namespace ASE_Assignment
             }
         }
 
+        /// <summary>
+        /// Method to create
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         protected Shape parseRectangle(string command, string[] words)
         {
             // for three arguments we use the existing position
@@ -163,6 +210,7 @@ namespace ASE_Assignment
             else if (words.Length == 4)
             {
                 var (x1, y1) = parsePoint(words[1]);
+                // we parse the coordinates using a method from the ExpressionHandler that can deal with variables as well as values
                 if (expressionHandler.TryEvalValue(words[2], out int width) && expressionHandler.TryEvalValue(words[3], out int height))
                 {
                     Rectangle rect = new Rectangle(color, x1, y1, width, height, penWidth, fillState);
@@ -181,6 +229,13 @@ namespace ASE_Assignment
             }
         }
 
+        /// <summary>
+        /// Method that parses the DrawTo line used to draw a line on the canvas
+        /// </summary>
+        /// <param name="command">parameter that contains the whole command line to be parsed</param>
+        /// <param name="words">an array with the command broken down into seperate words</param>
+        /// <returns>contains the line that has been created</returns>
+        /// <exception cref="Exception">thrown if the command is invalid and cannot be parsed</exception>
         protected Line parseDrawLine(string command, string[] words)
         {
             if (words.Length == 2)
@@ -198,6 +253,11 @@ namespace ASE_Assignment
             }
         }
 
+        /// <summary>
+        /// Method to set the colours to flashing.
+        /// </summary>
+        /// <param name="firstColor">Colour for the first half of the flash</param>
+        /// <param name="secondColor">Colour for the second half of the flash</param>
         public void setFlash(Color firstColor, Color secondColor)
         {
             flashingColor = true;
@@ -205,9 +265,14 @@ namespace ASE_Assignment
             this.secondColor = secondColor;
         }
 
-        public Shape parseShape(string command)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        public Shape parseShape(string command, string[] words)
         {
-            string[] words = command.Split(" ");
             switch (words[0].ToLower())
             {
                 case "circle":
@@ -228,9 +293,8 @@ namespace ASE_Assignment
             }
         }
 
-        public void setProperty(string command)
+        public void setProperty(string command, string[] words)
         {
-            string[] words = command.Split(" ");
             switch (words[0].ToLower())
             {
                 case "redgreen":

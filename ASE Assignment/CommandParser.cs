@@ -8,6 +8,11 @@ using System.Windows.Forms;
 
 namespace ASE_Assignment
 {
+    /// <summary>
+    /// This is the main command parser class. It use several other classes to help it parse things and keep track of state.
+    /// Most of the shape command parsing is done by the shape factory. This class handles things like if statements and other
+    /// flow control commands more directly.
+    /// </summary>
     public class CommandParser
     {
         Drawer drawingClass;
@@ -23,13 +28,14 @@ namespace ASE_Assignment
         string[] methodParameters;
         bool methodInProgress = false;
 
+        // this has to be a seperate attribute so it can be changed during flow control operations.
         int lineNumber;
+
         /// <summary>
         /// Constructor for the command parser class. This class executed commands against a class
         /// implementing the Drawer interface as it parses the commands.
         /// </summary>
         /// <param name="drawingClass">A class that must implement the Drawer interface</param>
-
         public CommandParser(Drawer drawingClass)
         {
             this.drawingClass = drawingClass;
@@ -179,13 +185,13 @@ namespace ASE_Assignment
                     case "rectangle":
                     case "circle":
                     case "drawto":
-                        drawingClass.addShape(shapeFactory.parseShape(line));
+                        drawingClass.addShape(shapeFactory.parseShape(line, words));
                         break;
                     // As are these
                     case "redgreen":
                     case "blueyellow":
                     case "blackwhite":
-                        shapeFactory.setProperty(line);
+                        shapeFactory.setProperty(line, words);
                         break;
                     // Other commands like the flow control command (e.g. while, if, method) are parsed here
                     case "while":

@@ -6,13 +6,16 @@ using System.Windows.Forms;
 
 namespace ASE_Assignment
 {
-    public partial class Form1 : Form
+    /// <summary>
+    /// This is the class that forms the main GUI of the program.
+    /// </summary>
+    public partial class MainWindow : Form
     {
         CommandParser parser;
         DrawingClass drawer;
         Thread changeColourThread;
         Boolean flag = true;
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
             drawer = new DrawingClass(drawingArea);
