@@ -19,28 +19,42 @@ namespace ASE_Assignment
             parser = new CommandParser(drawer);
             drawingArea.BackColor = Color.White;
             drawingArea.Paint += new System.Windows.Forms.PaintEventHandler(drawer.Graphics_Paint);
-            changeColourThread = new Thread(this.changeColour);
+            changeColourThread = new Thread(this.flashThread);
             changeColourThread.Start();
         }
 
         override protected void OnFormClosing(System.Windows.Forms.FormClosingEventArgs e)
         {
-            System.Console.WriteLine("TEST");
             flag = false;
         }
 
-        public void changeColour()
+        
+        public void flashThread()
         {
             while(flag)
             {
-                executeButton.BackColor = Color.Red;
-                Thread.Sleep(1000);
-                if (!flag)
-                    break;
-                executeButton.BackColor = Color.Green;
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
+                try
+                {
+                    UpdateSafe();
+                }
+                catch (Exception ex) { }
             }
         }
+
+        public void UpdateSafe()
+        {
+            if (drawingArea.InvokeRequired)
+            {
+                Action safeUpdate = delegate { UpdateSafe(); };
+                drawingArea.Invoke(safeUpdate);
+            }
+            else
+            {
+                drawer.flash();
+            }
+        }
+        
         private void execute_script(object sender, EventArgs e)
         {
             parser.executeScript(scriptArea.Text);
@@ -137,6 +151,20 @@ namespace ASE_Assignment
                     }
                     myStream.Close();
                 }
+            }
+        }
+
+        private void exportBitmapImage(object sender, EventArgs e)
+        {
+            Stream myStream;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "Bitmap files (*.bmp)|*.bmp|All files(*.*)|*.*";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = drawer.generateBitmap(drawingArea.Size.Width, drawingArea.Size.Height);
+                string path = Path.GetFullPath(saveFileDialog.FileName);
+                bmp.Save(path);
             }
         }
     }

@@ -11,6 +11,8 @@ namespace ASE_Assignment
         protected Color color;
         protected float penWidth;
         public bool fillState;
+        protected bool flashingColor;
+        protected Color secondColor;
 
         public float accessPenWidth
         {
@@ -67,6 +69,7 @@ namespace ASE_Assignment
             }
             set
             {
+                flashingColor = false;
                 color = Color.FromArgb(value.Item4, value.Item1, value.Item2, value.Item3);
             }
         }
@@ -82,8 +85,10 @@ namespace ASE_Assignment
                 (int, int) point = parsePoint(words[1]);
                 if (expressionHandler.TryEvalValue(words[2], out int radius))
                 {
-                    
-                    return new Circle(color, point, penWidth, fillState, radius);
+                    Circle circle =  new Circle(color, point, penWidth, fillState, radius);
+                    if(flashingColor)
+                        circle.setFlash(secondColor);
+                    return circle;
                 }
                 // if the radius couldn't be parsed throw an error
                 else
@@ -97,7 +102,10 @@ namespace ASE_Assignment
             {
                 if (expressionHandler.TryEvalValue(words[1], out int radius))
                 {
-                    return new Circle(color, x, y, penWidth, fillState, radius);
+                    Circle circle = new Circle(color, x, y, penWidth, fillState, radius);
+                    if (flashingColor)
+                        circle.setFlash(secondColor);
+                    return circle;
                 }
                 else
                 {
@@ -121,7 +129,10 @@ namespace ASE_Assignment
                 (int, int) point2 = parsePoint(words[2]);
                 (int, int) point3 = parsePoint(words[3]);
                 (int, int)[] points = { point1, point2, point3 };
-                return new Triangle(color, points, penWidth, fillState);
+                Triangle tri =  new Triangle(color, points, penWidth, fillState);
+                if (flashingColor)
+                    tri.setFlash(secondColor);
+                return tri;
             }
             // if three arguments are not thrown produce an exception
             else
@@ -138,8 +149,10 @@ namespace ASE_Assignment
                 // parse the width and height and throw an exception if they are invalid
                 if (expressionHandler.TryEvalValue(words[1], out int width) && expressionHandler.TryEvalValue(words[2], out int height))
                 {
-
-                    return new Rectangle(color, x, y, width, height, penWidth, fillState);
+                    Rectangle rect = new Rectangle(color, x, y, width, height, penWidth, fillState);
+                    if (flashingColor)
+                        rect.setFlash(secondColor);
+                    return rect;
                 }
                 else
                 {
@@ -152,7 +165,10 @@ namespace ASE_Assignment
                 var (x1, y1) = parsePoint(words[1]);
                 if (expressionHandler.TryEvalValue(words[2], out int width) && expressionHandler.TryEvalValue(words[3], out int height))
                 {
-                    return new Rectangle(color, x1, y1, width, height, penWidth, fillState);
+                    Rectangle rect = new Rectangle(color, x1, y1, width, height, penWidth, fillState);
+                    if (flashingColor)
+                        rect.setFlash(secondColor);
+                    return rect;
                 }
                 else
                 {
@@ -172,12 +188,21 @@ namespace ASE_Assignment
                 var (x1, y1) = parsePoint(words[1]);
                 Line line = new Line(color, x, y, penWidth, fillState, x1, y1);
                 (x, y) = (x1, y1);
+                if (flashingColor)
+                    line.setFlash(secondColor);
                 return line;
             }
             else
             {
                 throw new Exception("Invalid number of operands for command drawto");
             }
+        }
+
+        public void setFlash(Color firstColor, Color secondColor)
+        {
+            flashingColor = true;
+            color = firstColor;
+            this.secondColor = secondColor;
         }
 
         public Shape parseShape(string command)
@@ -199,6 +224,23 @@ namespace ASE_Assignment
                     break;
                 default:
                     return null;
+                    break;
+            }
+        }
+
+        public void setProperty(string command)
+        {
+            string[] words = command.Split(" ");
+            switch (words[0].ToLower())
+            {
+                case "redgreen":
+                    setFlash(Color.Red, Color.Green);
+                    break;
+                case "blueyellow":
+                    setFlash(Color.Blue, Color.Yellow);
+                    break;
+                case "blackwhite":
+                    setFlash(Color.Black, Color.White);
                     break;
             }
         }

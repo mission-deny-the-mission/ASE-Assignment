@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Threading;
 
 namespace ASE_Assignment
 {
@@ -11,6 +12,9 @@ namespace ASE_Assignment
         protected SolidBrush brush;
         protected bool fillState;
 
+        protected Color color, secondColor;
+        protected bool flashing, cycle;
+
         /// <summary>
         /// Constructor for a generic shape class.
         /// This is meant to be extended by other classes that implement differnt shapes with the extra
@@ -22,9 +26,12 @@ namespace ASE_Assignment
         /// <param name="fillState">true to fill the shape and false for an outline</param>
         protected Shape(Color colour, float penWidth, bool fillState)
         {
+            color = colour;
+            flashing = false;
             this.fillState = fillState;
             brush = new SolidBrush(colour);
             pen = new Pen(colour, penWidth);
+            cycle = true;
         }
 
         ~Shape()
@@ -38,6 +45,33 @@ namespace ASE_Assignment
         /// </summary>
         /// <param name="graphics">Graphics object to draw onto</param>
         public abstract void Paint(System.Drawing.Graphics graphics);
+
+        public void setFlash(Color secondColor)
+        {
+            this.secondColor = secondColor;
+            flashing = true;
+        }
+
+        public void flashRunner()
+        {
+            if (flashing)
+            {
+                if (cycle)
+                {
+                    pen.Color = secondColor;
+                    brush.Dispose();
+                    brush = new SolidBrush(secondColor);
+                    cycle = false;
+                }
+                else
+                {
+                    pen.Color = color;
+                    brush.Dispose();
+                    brush = new SolidBrush(color);
+                    cycle = true;
+                }
+            }
+        }
 
         public Color GetColor()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +71,7 @@ namespace ASE_Assignment
             }
         }
 
+        // TODO: Clean this mess up
         protected string[] parseParametersAndName(string stringToParse, out string name)
         {
             name = "";
@@ -149,6 +151,11 @@ namespace ASE_Assignment
                     case "circle":
                     case "drawto":
                         drawingClass.addShape(shapeFactory.parseShape(line));
+                        break;
+                    case "redgreen":
+                    case "blueyellow":
+                    case "blackwhite":
+                        shapeFactory.setProperty(line);
                         break;
                     case "while":
                         if (words.Length > 1)
@@ -451,9 +458,9 @@ namespace ASE_Assignment
             string[] commandArray = script.Split('\n');
             for (lineNumber = 0; lineNumber < commandArray.Length; lineNumber++)
             {
-                    executeLine(commandArray[lineNumber], lineNumber);
                 try
                 {
+                    executeLine(commandArray[lineNumber], lineNumber);
                 }
                 catch (Exception e)
                 {

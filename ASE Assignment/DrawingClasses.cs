@@ -9,6 +9,7 @@ namespace ASE_Assignment
         public void clear();
         public void addShape(Shape shape);
         public void update();
+        public void flash();
     }
     public class DrawingClass : Drawer
     {
@@ -44,6 +45,26 @@ namespace ASE_Assignment
         public void addShape(Shape shape)
         {
             shapes.Add(shape);
+        }
+
+        public Bitmap generateBitmap(int x, int y)
+        {
+            Bitmap bitmap = new Bitmap(x, y);
+            Graphics graphics = Graphics.FromImage(bitmap);
+            foreach (Shape shape in shapes)
+            {
+                shape.Paint(graphics);
+            }
+            return bitmap;
+        }
+
+        public void flash()
+        {
+            foreach(Shape shape in shapes)
+            {
+                shape.flashRunner();
+            }
+            update();
         }
     }
 

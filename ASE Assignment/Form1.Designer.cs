@@ -39,33 +39,37 @@ namespace ASE_Assignment
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToBitmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // drawingArea
             // 
-            this.drawingArea.Location = new System.Drawing.Point(12, 27);
+            this.drawingArea.Location = new System.Drawing.Point(26, 67);
+            this.drawingArea.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.drawingArea.Name = "drawingArea";
-            this.drawingArea.Size = new System.Drawing.Size(420, 224);
+            this.drawingArea.Size = new System.Drawing.Size(900, 553);
             this.drawingArea.TabIndex = 0;
             this.drawingArea.TabStop = false;
             // 
             // scriptArea
             // 
-            this.scriptArea.Location = new System.Drawing.Point(12, 266);
+            this.scriptArea.AcceptsTab = true;
+            this.scriptArea.Location = new System.Drawing.Point(26, 656);
+            this.scriptArea.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.scriptArea.Multiline = true;
             this.scriptArea.Name = "scriptArea";
-            this.scriptArea.Size = new System.Drawing.Size(282, 131);
-            this.scriptArea.TabIndex = 1;
             this.scriptArea.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.scriptArea.AcceptsTab = true;
+            this.scriptArea.Size = new System.Drawing.Size(600, 317);
+            this.scriptArea.TabIndex = 1;
             // 
             // executeScriptButton
             // 
-            this.executeScriptButton.Location = new System.Drawing.Point(357, 296);
+            this.executeScriptButton.Location = new System.Drawing.Point(765, 730);
+            this.executeScriptButton.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.executeScriptButton.Name = "executeScriptButton";
-            this.executeScriptButton.Size = new System.Drawing.Size(130, 23);
+            this.executeScriptButton.Size = new System.Drawing.Size(279, 57);
             this.executeScriptButton.TabIndex = 2;
             this.executeScriptButton.Text = "Execute Script";
             this.executeScriptButton.UseVisualStyleBackColor = true;
@@ -73,9 +77,10 @@ namespace ASE_Assignment
             // 
             // executeButton
             // 
-            this.executeButton.Location = new System.Drawing.Point(357, 414);
+            this.executeButton.Location = new System.Drawing.Point(765, 1021);
+            this.executeButton.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.executeButton.Name = "executeButton";
-            this.executeButton.Size = new System.Drawing.Size(75, 23);
+            this.executeButton.Size = new System.Drawing.Size(161, 57);
             this.executeButton.TabIndex = 3;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
@@ -84,19 +89,19 @@ namespace ASE_Assignment
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(36, 36);
-            this.menuStrip1.Location = new System.Drawing.Point(0, 24);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 47);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(550, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1179, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // commandArea
             // 
             this.commandArea.Cursor = System.Windows.Forms.Cursors.Default;
-            this.commandArea.Location = new System.Drawing.Point(13, 414);
+            this.commandArea.Location = new System.Drawing.Point(28, 1021);
+            this.commandArea.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.commandArea.Name = "commandArea";
-            this.commandArea.Size = new System.Drawing.Size(281, 23);
+            this.commandArea.Size = new System.Drawing.Size(598, 43);
             this.commandArea.TabIndex = 4;
             this.commandArea.KeyDown += new System.Windows.Forms.KeyEventHandler(this.input_KeyDown);
             // 
@@ -107,8 +112,7 @@ namespace ASE_Assignment
             this.fileToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            this.menuStrip2.Size = new System.Drawing.Size(550, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(1179, 47);
             this.menuStrip2.TabIndex = 6;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -116,30 +120,38 @@ namespace ASE_Assignment
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openScriptToolStripMenuItem,
-            this.saveScriptToolStripMenuItem});
+            this.saveScriptToolStripMenuItem,
+            this.exportToBitmapToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(80, 43);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openScriptToolStripMenuItem
             // 
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
             this.openScriptToolStripMenuItem.Text = "Open script";
             this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
             // 
             // saveScriptToolStripMenuItem
             // 
             this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
-            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
             this.saveScriptToolStripMenuItem.Text = "Save script";
             this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveScriptToolStripMenuItem_Click);
             // 
+            // exportToBitmapToolStripMenuItem
+            // 
+            this.exportToBitmapToolStripMenuItem.Name = "exportToBitmapToolStripMenuItem";
+            this.exportToBitmapToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.exportToBitmapToolStripMenuItem.Text = "Export to Bitmap";
+            this.exportToBitmapToolStripMenuItem.Click += new System.EventHandler(this.exportBitmapImage);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 448);
+            this.ClientSize = new System.Drawing.Size(1179, 1105);
             this.Controls.Add(this.commandArea);
             this.Controls.Add(this.executeButton);
             this.Controls.Add(this.executeScriptButton);
@@ -148,6 +160,7 @@ namespace ASE_Assignment
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.menuStrip2);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).EndInit();
@@ -170,6 +183,7 @@ namespace ASE_Assignment
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveScriptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToBitmapToolStripMenuItem;
     }
 }
 
