@@ -37,7 +37,7 @@ namespace ASE_Assignment
         {
             DataTable dt = new DataTable();
             bool containsOperation = false;
-            foreach (string operation in new string[] { "<", ">", "==", "!=", "<=", ">=" })
+            foreach (string operation in new string[] { "<", ">", "=", "!=", "<=", ">=" })
             {
                 if (condition.Contains(operation))
                 {

@@ -24,6 +24,11 @@ namespace ASE_Assignment
         bool methodInProgress = false;
 
         int lineNumber;
+        /// <summary>
+        /// Constructor for the command parser class. This class executed commands against a class
+        /// implementing the Drawer interface as it parses the commands.
+        /// </summary>
+        /// <param name="drawingClass">A class that must implement the Drawer interface</param>
 
         public CommandParser(Drawer drawingClass)
         {
@@ -39,7 +44,13 @@ namespace ASE_Assignment
             shapeFactory = new ShapeFactory(expressionHandler);
         }
 
-        // function to decode a colour entered by the user into a series of bytes representing the different colour channels
+        /// <summary>
+        /// This is a helper function to decode a colour from a command into a set of four byte values for each colour channel.
+        /// This one is used for colours that have been previously defined.
+        /// </summary>
+        /// <param name="colour">The colour that is to be decoded</param>
+        /// <returns>The method that is returned </returns>
+        /// <exception cref="Exception">Exception that is thrown when the colour in question does not exist</exception>
         private (byte, byte, byte, byte) decodeColour(string colour)
         {
             string lowerColour = colour.ToLower();
@@ -49,11 +60,16 @@ namespace ASE_Assignment
             }
             else
             {
-                throw new Exception();
+                throw new Exception("Colour has not been defined");
             }
         }
 
-        // helper function to parse a coordinate entered by the user
+        /// <summary>
+        /// This parses a pair of coordinates into integers
+        /// </summary>
+        /// <param name="point">Point string to be parsed from the orignal command</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Thrown when a point string is invalid and cannot be parsed.</exception>
         public (int, int) parsePoint(string point)
         {
             string[] points = point.Split(',');
@@ -72,19 +88,31 @@ namespace ASE_Assignment
         }
 
         // TODO: Clean this mess up
+        /// <summary>
+        /// Function to parse the name and parameter list of a method definition or method call.
+        /// </summary>
+        /// <param name="stringToParse">name and parameters to parse</param>
+        /// <param name="name">The name of the function</param>
+        /// <returns>The parameters of the function</returns>
+        /// <exception cref="Exception">Triggered by an invalid string</exception>
         protected string[] parseParametersAndName(string stringToParse, out string name)
         {
+            // generated the name until it finds the '(' symbol
             name = "";
             int currentPosition;
             for (currentPosition = 0; stringToParse[currentPosition] != '('; currentPosition++)
             {
+                if (stringToParse[currentPosition] == ' ')
+                    throw new Exception("Function name contains a space");
                 name = name + stringToParse[currentPosition];
             }
+            // start building the string of parameters. Continue until the ')' symbol is encountered
             string parameterString = "";
             for (currentPosition++; stringToParse[currentPosition] != ')'; currentPosition++)
             {
                 parameterString = parameterString + stringToParse[currentPosition];
             }
+            // if the parameter string isn't empty we start parsing it into seperate parameters
             if (parameterString.Length > 0)
             {
                 Stack<string> parameters = new Stack<string>();
@@ -104,7 +132,7 @@ namespace ASE_Assignment
                     else if (currentchar == ' ' && spacePermitted) { }
                     else if (currentchar == ' ' && !spacePermitted)
                     {
-                        throw new Exception("Canot have a space inside a paramter name");
+                        throw new Exception("Cannot have a space inside a paramter name");
                     }
                     else
                     {
@@ -146,17 +174,20 @@ namespace ASE_Assignment
             {
                 switch (words[0].ToLower())
                 {
+                    // These commands are parsed by the ShapeFactory
                     case "triangle":
                     case "rectangle":
                     case "circle":
                     case "drawto":
                         drawingClass.addShape(shapeFactory.parseShape(line));
                         break;
+                    // As are these
                     case "redgreen":
                     case "blueyellow":
                     case "blackwhite":
                         shapeFactory.setProperty(line);
                         break;
+                    // Other commands like the flow control command (e.g. while, if, method) are parsed here
                     case "while":
                         if (words.Length > 1)
                         {

@@ -1,0 +1,10 @@
+a = 5
+if a = 5
+	b = 6
+	if b > 7
+		circle 50
+	endif
+	if b < 7
+		circle 100
+	endif
+endif

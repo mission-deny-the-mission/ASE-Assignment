@@ -13,6 +13,12 @@ namespace ASE_Assignment_Unit_Tests
     [TestClass]
     public class CommandParserValidTests
     {
+        /// <summary>
+        /// Function to compare two bitmaps. This was found at: http://csharpexamples.com/c-fast-bitmap-compare/
+        /// </summary>
+        /// <param name="bmp1">The first bitmap</param>
+        /// <param name="bmp2">The second bitmap</param>
+        /// <returns>This is true if the bitmaps are the same</returns>
         public static bool CompareBitmapsFast(Bitmap bmp1, Bitmap bmp2)
         {
             if (bmp1 == null || bmp2 == null)
@@ -49,6 +55,14 @@ namespace ASE_Assignment_Unit_Tests
             return result;
         }
 
+        /// <summary>
+        /// This is used to create the valid unit tests. It works by taking two functions, one that executed arguments aginst a Command Parser class.
+        /// The other executes directly against a graphics area. The two resultant bitmaps are then compared.
+        /// This is used to test the CommandParser class the shape classes. It has to use a custom implementation of the Drawer interface
+        /// that is defined in another file.
+        /// </summary>
+        /// <param name="test">Takes a function with the command parser class as an argument</param>
+        /// <param name="control">Takes a function that is passed a pen and a graphics class</param>
         protected void testHelper(Action<CommandParser> test, Action<System.Drawing.Graphics, System.Drawing.Pen> control)
         {
             Bitmap bitmap1 = new Bitmap(640, 480);
@@ -64,13 +78,15 @@ namespace ASE_Assignment_Unit_Tests
 
             test(commandParser);
             control(graphics2, pen);
-
+            
+            // this is used for debugging purposes to look at the two bitmaps.
             //bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
             //bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
 
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
 
+        // methods to make drawing a circle against a graphics class easier.
         protected void drawCircle(Graphics graphics, Pen pen, int x, int y, int radius)
         {
             graphics.DrawEllipse(pen, x - radius, y - radius, radius * 2, radius * 2);
@@ -89,7 +105,10 @@ namespace ASE_Assignment_Unit_Tests
             int x = 0, y = 0;
             graphics.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
         }
-
+        
+        /// <summary>
+        /// This tests the DrawTo command of the CommandParser
+        /// </summary>
         [TestMethod]
         public void ParserClassTest1()
         {
@@ -100,6 +119,10 @@ namespace ASE_Assignment_Unit_Tests
                 });
         }
 
+        /// <summary>
+        /// This test a variety of commands including setting custom colours and transparency.
+        /// It also tests the ability to run scripts.
+        /// </summary>
         [TestMethod]
         public void ParserClassTest2()
         {
@@ -134,7 +157,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
-
+        /// <summary>
+        /// Tests the triangle command
+        /// </summary>
         [TestMethod]
         public void TriangleTest1()
         {
@@ -147,6 +172,9 @@ namespace ASE_Assignment_Unit_Tests
                 });
         }
 
+        /// <summary>
+        /// Tests the position pen and fill commands with a triangle
+        /// </summary>
         [TestMethod]
         public void RectangleTest1()
         {
@@ -168,6 +196,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// tests the drawto command and pen width
+        /// </summary>
         [TestMethod]
         public void WidthTest()
         {
@@ -188,6 +219,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// Tests moveto by drawing a circle
+        /// </summary>
         [TestMethod]
         public void MoveToTest()
         {
@@ -203,6 +237,10 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// this is here to test the clear command
+        /// It's not really possible to test the reset command as it's part of the Form1 class and not CommandParser
+        /// </summary>
         [TestMethod]
         public void ClearTest()
         {
@@ -224,6 +262,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// This tests setting different colours without defining them using the pen command
+        /// </summary>
         [TestMethod]
         public void PenColourTest()
         {
@@ -250,11 +291,16 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// This tests defining a method and calling it.
+        /// </summary>
         [TestMethod]
         public void MethodTest()
         {
             void test(CommandParser parser)
             {
+                // For the newer tests I have choosen to change my approach and put the scripts in a seperate class
+                // that is loaded as part of the test method.
                 using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\method.txt"))
                 {
                     string script = methodFile.ReadToEnd();
@@ -270,6 +316,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// This tests using a recursive method as I wanted recursion to work in my program
+        /// </summary>
         [TestMethod]
         public void RecursiveMethodTest()
         {
@@ -294,6 +343,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// This method tests using a while loop.
+        /// </summary>
         [TestMethod]
         public void WhileLoopTest()
         {
@@ -314,6 +366,9 @@ namespace ASE_Assignment_Unit_Tests
             testHelper(test, control);
         }
 
+        /// <summary>
+        /// Method to test nested while loops as I also wanted that feature to work in my program.
+        /// </summary>
         [TestMethod]
         public void NestedWhileLoopTest()
         {
@@ -333,6 +388,50 @@ namespace ASE_Assignment_Unit_Tests
                 drawCircle(graphics, pen, 160);
                 drawCircle(graphics, pen, 120);
                 drawCircle(graphics, pen, 240);
+            }
+            testHelper(test, control);
+        }
+
+        /// <summary>
+        /// Unit test for if statements
+        /// </summary>
+        [TestMethod]
+        public void IfStatementTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\if statement.txt"))
+                {
+                    string script = methodFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                drawCircle(graphics, pen, 100);
+                pen.Color = Color.Red;
+                drawCircle(graphics, pen, 200);
+            }
+            testHelper(test, control);
+        }
+
+        /// <summary>
+        /// Unit test for nested if statements
+        /// </summary>
+        [TestMethod]
+        public void NestedIfStatementTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\nested if statements.txt"))
+                {
+                    string script = scriptFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                drawCircle(graphics, pen, 100);
             }
             testHelper(test, control);
         }
