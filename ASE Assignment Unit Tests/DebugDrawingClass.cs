@@ -37,5 +37,10 @@ namespace ASE_Assignment_Unit_Tests
         {
             shapes.Add(shape);
         }
+
+        public void flash()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
