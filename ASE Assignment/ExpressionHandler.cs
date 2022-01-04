@@ -5,6 +5,9 @@ using System.Data;
 
 namespace ASE_Assignment
 {
+    /// <summary>
+    /// This is a class that handles things like parsing numbers and variables
+    /// </summary>
     class ExpressionHandler
     {
         Context context;
@@ -12,6 +15,12 @@ namespace ASE_Assignment
         {
             this.context = context;
         }
+
+        /// <summary>
+        /// This checks if a variable exists in all scopes when replacing identifiers with values
+        /// </summary>
+        /// <param name="equation">equation to have variables replaced on</param>
+        /// <returns>the equation with the variable identifiers replaced with values</returns>
         protected string ReplaceVariables(string equation)
         {
             foreach (Scope scope in context.scopes)
@@ -26,6 +35,12 @@ namespace ASE_Assignment
             }
             return equation;
         }
+
+        /// <summary>
+        /// A function which evaluates an equation including replacing variables with values
+        /// </summary>
+        /// <param name="equation">the equation</param>
+        /// <returns>the value the equation evaluates to</returns>
         public int Evaluate(string equation)
         {
             DataTable dt = new DataTable();
@@ -33,6 +48,13 @@ namespace ASE_Assignment
             double rawValue = Convert.ToDouble(dt.Compute(equation, ""));
             return (int) Math.Floor(rawValue);
         }
+
+        /// <summary>
+        /// method that evaluates a boolean condition like those used in while loops and if statements
+        /// </summary>
+        /// <param name="condition">equation to evaluate</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">is thrown if equation does not contains a boolean operation</exception>
         public bool EvaluateCondition(string condition)
         {
             DataTable dt = new DataTable();
@@ -56,21 +78,36 @@ namespace ASE_Assignment
                 throw new Exception("Operation string does not contain a boolean operation.");
             }
         }
-        public int EvaluateValue(string name)
+
+        /// <summary>
+        /// a method to evaluate a value such as a number or a variable
+        /// this is used for passing valus to commands or methods
+        /// </summary>
+        /// <param name="value">literal or identifier to parse</param>
+        /// <returns>the value of the literal or identifier</returns>
+        /// <exception cref="Exception">thrown if it's an identifier that cannot be found</exception>
+        public int EvaluateValue(string value)
         {
-            if (int.TryParse(name, out int result))
+            if (int.TryParse(value, out int result))
             {
                 return result;
             }
             foreach(Scope scope in context.scopes)
             {
-                if (scope.variables.ContainsKey(name))
+                if (scope.variables.ContainsKey(value))
                 {
-                    return scope.variables[name];
+                    return scope.variables[value];
                 }
             }
-            throw new Exception("Could not find variable " + name);
+            throw new Exception("Could not find variable " + value);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public bool TryEvalValue(string input, out int result)
         {
             try

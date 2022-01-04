@@ -50,13 +50,11 @@ namespace ASE_Assignment
 
     class IfStatement
     {
-        Scope scope;
         int lineno;
         string condition;
         Context context;
-        public IfStatement(Scope scope, int lineno, string condition, Context context)
+        public IfStatement(int lineno, string condition, Context context)
         {
-            this.scope = scope;
             this.lineno = lineno;
             this.condition = condition;
             this.context = context;
@@ -150,9 +148,7 @@ namespace ASE_Assignment
                 if (ifStatement.getlineno == lineno)
                     return;
             }
-            Scope scope = new Scope();
-            innerScopes.Push(scope);
-            IfStatement newIfStatement = new IfStatement(scope, lineno, condition, this);
+            IfStatement newIfStatement = new IfStatement(lineno, condition, this);
             ifStatements.Push(newIfStatement);
         }
         public void removeWhile()
@@ -162,7 +158,6 @@ namespace ASE_Assignment
         }
         public void removeIf()
         {
-            innerScopes.Pop();
             ifStatements.Pop();
         }
         public WhileLoop lastWhile
