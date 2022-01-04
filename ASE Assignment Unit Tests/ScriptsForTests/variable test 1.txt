@@ -1,0 +1,16 @@
+﻿a = 100
+b = 150
+c = 200
+rectangle a,b c a
+circle c,a b
+drawto a,a
+circle b
+new colour testcol a b c
+pen testcol
+drawto 200,200
+new colour testcol2 a b c a
+pen testcol2
+drawto 100,100
+drawto 300,300
+pen black
+drawto a,50

@@ -133,6 +133,7 @@ namespace ASE_Assignment
                         if (paramname.Length == 0)
                             throw new Exception("Cannot have an empty paramater name");
                         parameters.Push(paramname);
+                        paramname = "";
                         spacePermitted = true;
                     }
                     else if (currentchar == ' ' && spacePermitted) { }
@@ -507,6 +508,5 @@ namespace ASE_Assignment
             }
             drawingClass.update();
         }
-
     }
 }

@@ -1,0 +1,5 @@
+﻿method noparams()
+	circle 50
+	rectangle 100,100 60 60
+endmethod
+call noparams()

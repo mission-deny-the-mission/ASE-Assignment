@@ -80,8 +80,8 @@ namespace ASE_Assignment_Unit_Tests
             control(graphics2, pen);
             
             // this is used for debugging purposes to look at the two bitmaps.
-            //bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
-            //bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
+            bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
+            bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
 
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
@@ -344,6 +344,51 @@ namespace ASE_Assignment_Unit_Tests
         }
 
         /// <summary>
+        /// Unit test for a method without any parameters
+        /// </summary>
+        [TestMethod]
+        public void MethodWithNoParameterTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\method without parameters.txt"))
+                {
+                    string script = scriptFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                drawCircle(graphics, pen, 50);
+                graphics.DrawRectangle(pen, 100, 100, 60, 60);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void MethodWithManyParametersTest()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\method with many parameters.txt"))
+                {
+                    string script = scriptFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                graphics.DrawRectangle(pen, 0, 0, 100, 200);
+                pen.Color = Color.FromArgb(255, 100, 200, 0);
+                drawCircle(graphics, pen, 100, 200, 50);
+                drawCircle(graphics, pen, 100, 200, 250);
+                pen.Color = Color.FromArgb(255, 100, 200, 250);
+                graphics.DrawLine(pen, 0, 0, 100, 100);
+            }
+            testHelper(test, control);
+        }
+
+        /// <summary>
         /// This method tests using a while loop.
         /// </summary>
         [TestMethod]
@@ -351,9 +396,9 @@ namespace ASE_Assignment_Unit_Tests
         {
             void test(CommandParser parser)
             {
-                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\while loop.txt"))
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\while loop.txt"))
                 {
-                    string script = methodFile.ReadToEnd();
+                    string script = scriptFile.ReadToEnd();
                     parser.executeScript(script);
                 }
             }
@@ -374,9 +419,9 @@ namespace ASE_Assignment_Unit_Tests
         {
             void test(CommandParser parser)
             {
-                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\nested while loop.txt"))
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\nested while loop.txt"))
                 {
-                    string script = methodFile.ReadToEnd();
+                    string script = scriptFile.ReadToEnd();
                     parser.executeScript(script);
                 }
             }
@@ -400,9 +445,9 @@ namespace ASE_Assignment_Unit_Tests
         {
             void test(CommandParser parser)
             {
-                using (StreamReader methodFile = File.OpenText("..\\..\\..\\ScriptsForTests\\if statement.txt"))
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\if statement.txt"))
                 {
-                    string script = methodFile.ReadToEnd();
+                    string script = scriptFile.ReadToEnd();
                     parser.executeScript(script);
                 }
             }
@@ -432,6 +477,34 @@ namespace ASE_Assignment_Unit_Tests
             void control(Graphics graphics, Pen pen)
             {
                 drawCircle(graphics, pen, 100);
+            }
+            testHelper(test, control);
+        }
+
+        [TestMethod]
+        public void VariableTest1()
+        {
+            void test(CommandParser parser)
+            {
+                using (StreamReader scriptFile = File.OpenText("..\\..\\..\\ScriptsForTests\\variable test 1.txt"))
+                {
+                    string script = scriptFile.ReadToEnd();
+                    parser.executeScript(script);
+                }
+            }
+            void control(Graphics graphics, Pen pen)
+            {
+                graphics.DrawRectangle(pen, 100, 150, 200, 100);
+                drawCircle(graphics, pen, 200, 100, 150);
+                graphics.DrawLine(pen, 0, 0, 100, 100);
+                drawCircle(graphics, pen, 100, 100, 150);
+                pen.Color = Color.FromArgb(255, 100, 150, 200);
+                graphics.DrawLine(pen, 100, 100, 200, 200);
+                pen.Color = Color.FromArgb(100, 100, 150, 200);
+                graphics.DrawLine(pen, 200, 200, 100, 100);
+                graphics.DrawLine(pen, 100, 100, 300, 300);
+                pen.Color = Color.Black;
+                graphics.DrawLine(pen, 300, 300, 100, 50);
             }
             testHelper(test, control);
         }

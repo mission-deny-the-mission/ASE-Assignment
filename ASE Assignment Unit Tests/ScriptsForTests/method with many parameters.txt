@@ -1,0 +1,13 @@
+﻿method twoparams(a, b)
+	rectangle a b
+	pen a b 0
+	circle a,b 50
+endmethod
+method threeparams(a, b, c)
+	circle a,b c
+	pen a b c
+	drawto 100,100
+endmethod
+
+call twoparams(100, 200)
+call threeparams(100, 200, 250)
