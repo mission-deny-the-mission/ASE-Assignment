@@ -214,9 +214,10 @@ namespace ASE_Assignment
                         catch (Exception ex) { }
                         break;
                     case "if":
+                        // if statements must have a condition so need to have more than one word
                         if (words.Length > 1)
                         {
-                            string expression = String.Join(" ", words, 1, words.Length - 1);
+                            string expression = line.Substring(3);
                             context.AddIf(lineno, expression);
                             if (!context.lastIf.evaluate())
                             {
@@ -246,8 +247,11 @@ namespace ASE_Assignment
                         }
                         break;
                     case "method":
+                        // stores the name of the function being created
                         string name;
+                        // parse the parameters and name of the function/method
                         string[] parameters2 = parseParametersAndName(line.Substring(7), out name);
+                        // information about the method needed when creating the method object
                         methodStartLine = lineno;
                         methodName = name;
                         methodParameters = parameters2;
@@ -255,6 +259,7 @@ namespace ASE_Assignment
                         processLine = false;
                         break;
                     case "endmethod":
+                        // exits the method and changed the current line number
                         lineNumber = context.ExitMethod();
                         break;
                     case "pen":

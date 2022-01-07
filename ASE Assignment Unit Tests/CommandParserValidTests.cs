@@ -112,6 +112,8 @@ namespace ASE_Assignment_Unit_Tests
         [TestMethod]
         public void ParserClassTest1()
         {
+            // Here a lambda is used because the method bodies are only one line and it seemed excessive to put a nested function here.
+            // Another name for a lambda is an anonymous function, they are functions without a name that can be passed as an argument.
             testHelper(
                 parser => { parser.executeLineHandler("DrawTo 100,100", ""); },
                 (graphics, pen) => {
@@ -126,6 +128,7 @@ namespace ASE_Assignment_Unit_Tests
         [TestMethod]
         public void ParserClassTest2()
         {
+            // unlike methods functions embedded in a method don't require an access modifier like public or private
             void test(CommandParser parser)
             {
                 string script = "pen red\n" +
