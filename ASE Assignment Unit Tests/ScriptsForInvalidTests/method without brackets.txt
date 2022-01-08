@@ -1,0 +1,3 @@
+﻿method testMethod
+	circle 20
+endmethod

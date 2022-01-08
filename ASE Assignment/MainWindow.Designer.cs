@@ -40,6 +40,7 @@ namespace ASE_Assignment
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToBitmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -77,7 +78,7 @@ namespace ASE_Assignment
             // 
             // executeButton
             // 
-            this.executeButton.Location = new System.Drawing.Point(765, 1021);
+            this.executeButton.Location = new System.Drawing.Point(816, 1007);
             this.executeButton.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.executeButton.Name = "executeButton";
             this.executeButton.Size = new System.Drawing.Size(161, 57);
@@ -89,7 +90,7 @@ namespace ASE_Assignment
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(36, 36);
-            this.menuStrip1.Location = new System.Drawing.Point(0, 47);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 45);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1179, 24);
             this.menuStrip1.TabIndex = 5;
@@ -112,7 +113,7 @@ namespace ASE_Assignment
             this.fileToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1179, 47);
+            this.menuStrip2.Size = new System.Drawing.Size(1179, 45);
             this.menuStrip2.TabIndex = 6;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -123,35 +124,46 @@ namespace ASE_Assignment
             this.saveScriptToolStripMenuItem,
             this.exportToBitmapToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(80, 43);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(80, 41);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openScriptToolStripMenuItem
             // 
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(366, 48);
             this.openScriptToolStripMenuItem.Text = "Open script";
             this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
             // 
             // saveScriptToolStripMenuItem
             // 
             this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
-            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(366, 48);
             this.saveScriptToolStripMenuItem.Text = "Save script";
             this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveScriptToolStripMenuItem_Click);
             // 
             // exportToBitmapToolStripMenuItem
             // 
             this.exportToBitmapToolStripMenuItem.Name = "exportToBitmapToolStripMenuItem";
-            this.exportToBitmapToolStripMenuItem.Size = new System.Drawing.Size(403, 48);
+            this.exportToBitmapToolStripMenuItem.Size = new System.Drawing.Size(366, 48);
             this.exportToBitmapToolStripMenuItem.Text = "Export to Bitmap";
             this.exportToBitmapToolStripMenuItem.Click += new System.EventHandler(this.exportBitmapImage);
             // 
-            // Form1
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(765, 797);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(279, 52);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Check Syntax";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.checkSyntax);
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1179, 1105);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.commandArea);
             this.Controls.Add(this.executeButton);
             this.Controls.Add(this.executeScriptButton);
@@ -161,7 +173,7 @@ namespace ASE_Assignment
             this.Controls.Add(this.menuStrip2);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.Name = "Form1";
+            this.Name = "MainWindow";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).EndInit();
             this.menuStrip2.ResumeLayout(false);
@@ -184,6 +196,7 @@ namespace ASE_Assignment
         private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToBitmapToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 

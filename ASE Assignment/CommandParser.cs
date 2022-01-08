@@ -424,7 +424,7 @@ namespace ASE_Assignment
                             {
                                 throw new Exception();
                             }
-                            string expression = String.Join(" ", words, 2, words.Length - 2);
+                            string expression = line.Substring(line.IndexOf('=') + 1);
                             int value = expressionHandler.Evaluate(expression);
                             expressionHandler.AddUpdateVariable(words[0], value);
                         }
@@ -485,7 +485,7 @@ namespace ASE_Assignment
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show(e.Message, "Syntax Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             drawingClass.update();
@@ -496,7 +496,7 @@ namespace ASE_Assignment
         // if an error occurs decoding one of the commands it stops execution
         // and displays an error box with the line number to the user
         // called by the executeScript button handler
-        public void executeScript(string script)
+        public bool executeScript(string script, bool showError=true)
         {
             string[] commandArray = script.Split('\n');
             for (lineNumber = 0; lineNumber < commandArray.Length; lineNumber++)
@@ -507,11 +507,17 @@ namespace ASE_Assignment
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(String.Format("On line {0}: {1}", lineNumber, e.Message));
-                    break;
+                    if (showError)
+                        MessageBox.Show(
+                            String.Format("On line {0}: {1}", lineNumber, e.Message),
+                            "Syntax Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    return false;
                 }
             }
             drawingClass.update();
+            return true;
         }
     }
 }

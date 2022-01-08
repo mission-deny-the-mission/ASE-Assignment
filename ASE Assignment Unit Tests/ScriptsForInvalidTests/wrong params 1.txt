@@ -1,0 +1,4 @@
+﻿method drawcircle(a)
+	circle 50,50 a
+endmethod
+call drawcircle(50, 52)

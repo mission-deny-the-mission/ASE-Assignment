@@ -1,0 +1,7 @@
+﻿var count = 1
+while count < 5
+	radius = count * 20
+	circle radius
+	count = count + 1
+endwhile
+drawto radius,radius

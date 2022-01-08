@@ -14,6 +14,15 @@ namespace ASE_Assignment
         public void update();
         public void flash();
     }
+
+    public class NoDraw : Drawer
+    {
+        public void clear() { }
+        public void addShape(Shape shape) { }
+        public void update() { }
+        public void flash() { }
+    }
+
     /// <summary>
     /// An implementation of that interface that works with the PictureBox class.
     /// It has a function that acts as a paint handler.

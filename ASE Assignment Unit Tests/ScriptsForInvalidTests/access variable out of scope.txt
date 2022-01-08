@@ -1,0 +1,5 @@
+﻿method testmethod()
+	var = 50
+	circle var
+endmethod
+drawto var,1

@@ -52,8 +52,7 @@ namespace ASE_Assignment
             // use the function defined earlier to replace the variable identifiers with values
             equation = ReplaceVariables(equation);
             // perform the computation using the DataTable class Compute method
-            double rawValue = Convert.ToDouble(dt.Compute(equation, ""));
-            return (int) Math.Floor(rawValue);
+            return Convert.ToInt32(dt.Compute(equation, ""));
         }
 
         /// <summary>

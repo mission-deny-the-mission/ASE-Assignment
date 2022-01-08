@@ -170,5 +170,18 @@ namespace ASE_Assignment
                 bmp.Save(path);
             }
         }
+
+        private void checkSyntax(object sender, EventArgs e)
+        {
+            NoDraw noDraw = new NoDraw();
+            CommandParser syntaxChecker = new CommandParser(noDraw);
+            if (syntaxChecker.executeScript(scriptArea.Text))
+            {
+                MessageBox.Show("No syntax errors found.",
+                    "Syntax Check",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+        }
     }
 }
