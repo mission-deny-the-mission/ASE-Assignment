@@ -105,6 +105,8 @@ namespace ASE_Assignment_Unit_Tests
         public void AccessUndefinedVariable()
         {
             TestScript("drawto var1,var2");
+            TestScript("var = x + y");
+            TestScript("var2 = var1");
         }
 
         [TestMethod]
@@ -125,6 +127,18 @@ namespace ASE_Assignment_Unit_Tests
         {
             TestScriptFile("access variable out of scope.txt");
             TestScriptFile("access variable out of scope 2.txt");
+        }
+
+        [TestMethod]
+        public void MethodCallWithNoBrackets()
+        {
+            TestScriptFile("method call with no brackets.txt");
+        }
+
+        [TestMethod]
+        public void CallMethodThatDoesNotExist()
+        {
+            TestScript("call mymethod(5)");
         }
     }
 }

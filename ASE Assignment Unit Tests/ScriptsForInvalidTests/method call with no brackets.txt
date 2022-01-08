@@ -1,0 +1,5 @@
+﻿method testmethod(a)
+	circle a
+	drawto a,a
+endmethod
+call testmethod
