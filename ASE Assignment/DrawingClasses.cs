@@ -15,6 +15,8 @@ namespace ASE_Assignment
         public void flash();
     }
 
+    // This is a drawing class that dosen't do any actual drawing.
+    // This is used for syntax checking and some of the invalid unit tests
     public class NoDraw : Drawer
     {
         public void clear() { }
