@@ -47,7 +47,7 @@ namespace ASE_Assignment
             // 
             // drawingArea
             // 
-            this.drawingArea.Location = new System.Drawing.Point(23, 58);
+            this.drawingArea.Location = new System.Drawing.Point(14, 56);
             this.drawingArea.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.drawingArea.Name = "drawingArea";
             this.drawingArea.Size = new System.Drawing.Size(780, 478);
@@ -57,7 +57,7 @@ namespace ASE_Assignment
             // scriptArea
             // 
             this.scriptArea.AcceptsTab = true;
-            this.scriptArea.Location = new System.Drawing.Point(23, 567);
+            this.scriptArea.Location = new System.Drawing.Point(14, 567);
             this.scriptArea.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.scriptArea.Multiline = true;
             this.scriptArea.Name = "scriptArea";
@@ -67,7 +67,7 @@ namespace ASE_Assignment
             // 
             // executeScriptButton
             // 
-            this.executeScriptButton.Location = new System.Drawing.Point(561, 631);
+            this.executeScriptButton.Location = new System.Drawing.Point(556, 631);
             this.executeScriptButton.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.executeScriptButton.Name = "executeScriptButton";
             this.executeScriptButton.Size = new System.Drawing.Size(242, 49);
@@ -100,7 +100,7 @@ namespace ASE_Assignment
             // commandArea
             // 
             this.commandArea.Cursor = System.Windows.Forms.Cursors.Default;
-            this.commandArea.Location = new System.Drawing.Point(24, 883);
+            this.commandArea.Location = new System.Drawing.Point(16, 883);
             this.commandArea.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.commandArea.Name = "commandArea";
             this.commandArea.Size = new System.Drawing.Size(519, 39);
@@ -152,7 +152,7 @@ namespace ASE_Assignment
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(561, 689);
+            this.button1.Location = new System.Drawing.Point(556, 689);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(242, 45);
             this.button1.TabIndex = 7;
