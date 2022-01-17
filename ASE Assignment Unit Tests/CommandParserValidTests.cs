@@ -80,8 +80,8 @@ namespace ASE_Assignment_Unit_Tests
             control(graphics2, pen);
             
             // this is used for debugging purposes to look at the two bitmaps.
-            bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
-            bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
+            // bitmap1.Save("C:\\Users\\Harry Hall\\Image1 - test.bmp");
+            // bitmap2.Save("C:\\Users\\Harry Hall\\Image2 - control.bmp");
 
             Assert.IsTrue(CompareBitmapsFast(bitmap1, bitmap2));
         }
